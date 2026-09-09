@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 
 from .routes.usuarios import router as usuarios_router
+from .routes.productos import router as productos_router
+
 
 app = FastAPI(
     title="Mercado VIVA API",
@@ -9,6 +11,7 @@ app = FastAPI(
 )
 
 app.include_router(usuarios_router)
+app.include_router(productos_router)
 
 
 @app.get("/")

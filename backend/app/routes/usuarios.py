@@ -1,17 +1,15 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 
 from ..database import get_db
 from ..models.usuario import Usuario
-from ..schemas.usuario import UsuarioRegistro
+from ..schemas.usuario import UsuarioRegistro, UsuarioLogin, UsuarioRespuesta
+from ..services.usuarios import registrar_usuario, iniciar_sesion
 
 router = APIRouter(
     prefix="/usuarios",
     tags=["Usuarios"]
 )
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @router.get("/")
@@ -19,27 +17,25 @@ def obtener_usuarios(db: Session = Depends(get_db)):
     return db.query(Usuario).all()
 
 
-@router.post("/registro")
-def registrar_usuario(
+@router.post("/registro", response_model=UsuarioRespuesta)
+def crear_usuario(
     datos: UsuarioRegistro,
     db: Session = Depends(get_db)
 ):
-    contrasena_hash = pwd_context.hash(datos.contrasena)
+    return registrar_usuario(datos, db)
 
-    nuevo_usuario = Usuario(
-        nombre=datos.nombre,
-        numero_identidad=datos.numero_identidad,
-        nombre_usuario=datos.nombre_usuario,
-        contrasena_hash=contrasena_hash,
-        correo=datos.correo,
-        rol=datos.rol,
-        direccion=datos.direccion,
-        saldo_simulado=0,
-        activo=True
+@router.post("/login", response_model=UsuarioRespuesta)
+def login(
+    datos: UsuarioLogin,
+    db: Session = Depends(get_db)
+):
+    usuario = iniciar_sesion(
+        datos.nombre_usuario,
+        datos.contrasena,
+        db
     )
 
-    db.add(nuevo_usuario)
-    db.commit()
-    db.refresh(nuevo_usuario)
+    if not usuario:
+        return {"mensaje": "Usuario o contraseña incorrectos"}
 
-    return nuevo_usuario
+    return usuario
