@@ -5,6 +5,9 @@ from ..models.pedido import Pedido
 from ..models.detalle_pedido import DetallePedido
 from ..models.reserva_stock import ReservaStock
 from ..models.movimiento_inventario import MovimientoInventario
+from .saldo import descontar_saldo
+from ..models.caja import Caja
+from ..models.movimiento_caja import MovimientoCaja
 
 
 def confirmar_pedido(pedido_id, db: Session):
@@ -16,24 +19,57 @@ def confirmar_pedido(pedido_id, db: Session):
         raise ValueError("Pedido no encontrado")
 
     if pedido.estado != "pendiente":
-        raise ValueError(
-            "El pedido no está pendiente"
-        )
+        raise ValueError("El pedido no está pendiente")
 
     detalles = db.query(DetallePedido).filter(
         DetallePedido.pedido_id == pedido.id
     ).all()
 
     if not detalles:
-        raise ValueError(
-            "El pedido no tiene detalles"
-        )
+        raise ValueError("El pedido no tiene detalles")
 
     try:
+        # Las compras por web se cobran con el saldo simulado.
+        if pedido.canal == "web":
+            descontar_saldo(
+                usuario_id=pedido.usuario_id,
+                monto=pedido.total,
+                pedido_id=pedido.id,
+                db=db
+            )
+
+        if pedido.canal == "pos":
+            if not pedido.cajero_id:
+                raise ValueError("La venta POS necesita un cajero")
+
+            if not pedido.caja_id:
+                raise ValueError("La venta POS necesita una caja")
+
+            caja = db.query(Caja).filter(
+                Caja.id == pedido.caja_id,
+                Caja.cajero_id == pedido.cajero_id,
+                Caja.estado == "abierta"
+            ).first()
+
+            if not caja:
+                raise ValueError("La caja no está abierta o no pertenece al cajero")
+
+            movimiento_caja = MovimientoCaja(
+                caja_id=caja.id,
+                tipo="venta",
+                monto=pedido.total,
+                pedido_id=pedido.id,
+                descripcion="Venta POS"
+            )
+
+            db.add(movimiento_caja)
+            db.flush()
+
         for detalle in detalles:
 
             producto = db.query(Producto).filter(
-                Producto.id == detalle.producto_id
+                Producto.id == detalle.producto_id,
+                Producto.activo == True
             ).first()
 
             if not producto:
@@ -58,16 +94,11 @@ def confirmar_pedido(pedido_id, db: Session):
                     f"{producto.nombre}"
                 )
 
-            # La venta consume físicamente las unidades.
             producto.stock_actual -= detalle.cantidad
-
-            # Se liberan las unidades que estaban reservadas.
             producto.stock_reservado -= detalle.cantidad
 
-            # Confirmamos la reserva.
             reserva.estado = "confirmada"
 
-            # Registramos el movimiento de inventario.
             tipo_movimiento = (
                 "salida_web"
                 if pedido.canal == "web"
@@ -96,3 +127,4 @@ def confirmar_pedido(pedido_id, db: Session):
     except Exception:
         db.rollback()
         raise
+

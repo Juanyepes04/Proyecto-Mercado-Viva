@@ -10,7 +10,9 @@ class DetallePedidoCrear(BaseModel):
 
 
 class PedidoCrear(BaseModel):
-    usuario_id: UUID
+    usuario_id: UUID | None = None
+    cajero_id: UUID | None = None
+    caja_id: UUID | None = None
     canal: str
     detalles: list[DetallePedidoCrear]
 
@@ -30,7 +32,7 @@ class PedidoRespuesta(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    usuario_id: UUID
+    usuario_id: UUID | None
     cajero_id: UUID | None
     caja_id: UUID | None
     canal: str

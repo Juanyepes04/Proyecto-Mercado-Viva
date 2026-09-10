@@ -13,6 +13,8 @@ def crear_pedido(datos: PedidoCrear, db: Session):
     try:
         pedido = Pedido(
             usuario_id=datos.usuario_id,
+            cajero_id=datos.cajero_id,
+            caja_id=datos.caja_id,
             canal=datos.canal,
             estado="pendiente",
             total=0
