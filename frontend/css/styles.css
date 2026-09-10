@@ -1,0 +1,147 @@
+/* =========================================================
+   MERCADO VIVA — DESIGN TOKENS & RESET
+   Compartido por todos los módulos del frontend.
+   Paleta y reglas según lineamientos UI/UX de Supermercados VIVA.
+   ========================================================= */
+
+:root {
+  /* Neutros (escala zinc) */
+  --zinc-50: #fafafa;
+  --zinc-100: #f4f4f5;
+  --zinc-200: #e4e4e7;
+  --zinc-300: #d4d4d8;
+  --zinc-400: #a1a1aa;
+  --zinc-500: #71717a;
+  --zinc-700: #3f3f46;
+  --zinc-800: #27272a;
+  --zinc-900: #18181b;
+  --zinc-950: #09090b;
+
+  /* Marca — verde retail sobrio, nunca lima fluorescente */
+  --emerald-50: #ecfdf5;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --emerald-900: #064e3b;
+
+  /* Semántica de inventario / estados */
+  --rose-50: #fff1f2;
+  --rose-700: #be123c;
+  --amber-50: #fffbeb;
+  --amber-700: #b45309;
+
+  /* Tipografía */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Radios — nunca rounded-full ni rounded-3xl en paneles operativos */
+  --radius-sm: 2px;
+  --radius-md: 6px;
+
+  /* Movimiento — nada de animaciones lentas ni rebotes */
+  --transition-fast: 100ms ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--zinc-900);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tag compacto y monocromático (patrón [POS] / [WEB] / [BODEGA]) */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--primary {
+  background: var(--emerald-600);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--emerald-700);
+}
+
+.btn--primary:disabled {
+  background: var(--zinc-300);
+  cursor: not-allowed;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--zinc-950);
+}
+
+/* Alertas */
+.alert {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+}
+
+.alert--error {
+  background: var(--rose-50);
+  color: var(--rose-700);
+  border-color: #fecdd3;
+}

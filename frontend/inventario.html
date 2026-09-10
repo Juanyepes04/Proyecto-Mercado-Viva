@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario — Mercado VIVA</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/inventario.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ======================= TOPBAR ======================= -->
+  <header class="topbar">
+    <div class="topbar__title">
+      <span class="topbar__logo" aria-hidden="true">VIVA</span>
+      <div>
+        <h1>Portal de Abastecedor</h1>
+        <p class="breadcrumb">Módulo Abastecimiento <span aria-hidden="true">&rsaquo;</span> Inventario</p>
+      </div>
+    </div>
+
+    <div class="topbar__meta">
+      <button class="btn btn--ghost btn--icon" id="btnTheme" type="button" title="Alternar modo bodega (oscuro)">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <div class="topbar__clock">
+        <span id="relojActual">--:--:--</span>
+        <span id="fechaActual" class="topbar__date"></span>
+      </div>
+      <div class="topbar__user">
+        <span class="topbar__avatar" id="avatarAbastecedor">AB</span>
+        <div class="topbar__user-info">
+          <strong id="nombreAbastecedorTop">Abastecedor</strong>
+          <span>Rol: Abastecedor</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- ======================= PANEL: RECEPCIÓN ======================= -->
+    <section class="panel panel--recepcion" id="panelRecepcion">
+      <div class="panel__header">
+        <div>
+          <h2>Recepción de Mercancía</h2>
+          <p class="panel__subtitle">Registra el ingreso físico de productos para actualizar el stock centralizado</p>
+        </div>
+        <button class="btn btn--ghost" id="btnColapsar" type="button" aria-expanded="true" aria-controls="panelRecepcionBody">
+          Contraer <span id="colapsarIcon">▾</span>
+        </button>
+      </div>
+
+      <div class="panel__body" id="panelRecepcionBody">
+
+        <!-- Cabecera de recepción -->
+        <div class="recepcion-cabecera">
+          <div class="field">
+            <label for="refRecepcion">N.° de recepción</label>
+            <input type="text" id="refRecepcion" readonly>
+          </div>
+          <div class="field">
+            <label for="fechaRecepcion">Fecha</label>
+            <input type="text" id="fechaRecepcion" readonly>
+          </div>
+          <div class="field">
+            <label for="filtroCategoriaScan">Categoría de referencia</label>
+            <select id="filtroCategoriaScan">
+              <option value="">Todas las categorías</option>
+            </select>
+          </div>
+          <div class="field field--grow">
+            <label for="inputAbastecedor">Recibido por</label>
+            <input type="text" id="inputAbastecedor" placeholder="Nombre del abastecedor">
+          </div>
+        </div>
+
+        <!-- Escaneo rápido -->
+        <div class="scan-block">
+          <label for="scanInput">Entrada rápida por SKU (escaneo)</label>
+          <div class="scan-row">
+            <span class="scan-icon" aria-hidden="true">▥</span>
+            <input type="text" id="scanInput" list="listaProductos" placeholder="Escanea o escribe el SKU y presiona Enter..." autocomplete="off">
+            <datalist id="listaProductos"></datalist>
+            <button class="btn btn--primary" id="btnAgregarManual" type="button">+ Agregar manualmente</button>
+          </div>
+          <p class="scan-hint" id="scanHint" role="status" aria-live="polite"></p>
+
+          <div class="manual-add-row" id="manualAddRow" hidden>
+            <select id="manualProducto" aria-label="Producto a agregar"></select>
+            <input type="number" id="manualCantidad" min="1" step="1" value="1" aria-label="Cantidad a recibir">
+            <button class="btn btn--primary btn--sm" id="manualConfirmar" type="button">Agregar</button>
+            <button class="btn btn--ghost btn--sm" id="manualCancelarBtn" type="button">Cancelar</button>
+          </div>
+        </div>
+
+        <!-- Renglones recibidos -->
+        <div class="tabla-wrap tabla-wrap--renglones">
+          <table class="grid grid--renglones">
+            <thead>
+              <tr>
+                <th class="col-index">#</th>
+                <th>SKU</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th class="num">Stock actual</th>
+                <th class="num">Cant. recibida</th>
+                <th class="num">Stock resultante</th>
+                <th class="col-action"></th>
+              </tr>
+            </thead>
+            <tbody id="renglonesBody">
+              <tr class="empty-row" id="renglonesEmpty">
+                <td colspan="8">Sin renglones — escanea un SKU o agrega manualmente</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totales y acciones -->
+        <div class="recepcion-footer">
+          <div class="totales">
+            <span><strong id="totalItems">0</strong> ítems</span>
+            <span class="totales__divider" aria-hidden="true">·</span>
+            <span><strong id="totalUnidades">0</strong> unidades físicas</span>
+          </div>
+          <div class="acciones">
+            <button class="btn btn--danger-ghost" id="btnCancelar" type="button">✕ Cancelar</button>
+            <button class="btn btn--ghost" id="btnBorrador" type="button">💾 Guardar borrador</button>
+            <button class="btn btn--ghost" id="btnExportar" type="button">⭳ Exportar resumen</button>
+            <button class="btn btn--primary btn--lg" id="btnRegistrar" type="button" disabled>
+              ✔ Registrar entrada — FINALIZAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= PANEL: GRID DE INVENTARIO ======================= -->
+    <section class="panel panel--grid">
+      <div class="panel__header">
+        <div>
+          <h2>Inventario actual</h2>
+          <p class="panel__subtitle">Cuadre de existencias en tiempo real por producto</p>
+        </div>
+        <button class="btn btn--ghost" id="btnRefrescar" type="button">⟳ Refrescar</button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="resumen-cards" id="resumenCards"></div>
+
+      <!-- Toolbar: filtros rápidos + búsqueda -->
+      <div class="toolbar">
+        <div class="chip-filters" id="chipFiltros">
+          <button class="chip chip--active" data-filtro="todos" type="button">Todos</button>
+          <button class="chip" data-filtro="bajo-minimo" type="button">Bajo stock mínimo</button>
+          <button class="chip" data-filtro="quiebre" type="button">Quiebre de stock</button>
+          <button class="chip" data-filtro="reservado" type="button">Con reserva activa</button>
+        </div>
+        <div class="toolbar__search">
+          <select id="filtroCategoriaGrid">
+            <option value="">Todas las categorías</option>
+          </select>
+          <input type="search" id="buscarProducto" placeholder="Buscar por SKU o nombre...">
+        </div>
+      </div>
+
+      <!-- Data grid -->
+      <div class="tabla-wrap tabla-wrap--inventario">
+        <table class="grid grid--inventario">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Descripción</th>
+              <th>Categoría</th>
+              <th class="num">Físico (bodega)</th>
+              <th class="num">Reservado (web)</th>
+              <th class="num">POS / disponible</th>
+              <th class="num">Mínimo</th>
+              <th>Discrepancia</th>
+              <th>Últ. actualización</th>
+              <th class="col-action">Ajuste</th>
+            </tr>
+          </thead>
+          <tbody id="inventarioBody">
+            <tr><td colspan="10" class="loading-row">Cargando inventario...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Modal: ajuste rápido -->
+<div class="modal-backdrop" id="modalAjusteBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalAjusteTitulo">
+    <h3 id="modalAjusteTitulo">Ajuste rápido de stock</h3>
+    <p id="modalAjusteProducto" class="modal__producto"></p>
+
+    <div class="field">
+      <label for="modalStockActual">Stock físico</label>
+      <input type="number" id="modalStockActual" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="modalStockMinimo">Stock mínimo</label>
+      <input type="number" id="modalStockMinimo" min="0" step="1">
+    </div>
+
+    <div class="modal__actions">
+      <button class="btn btn--ghost" id="modalCancelar" type="button">Cancelar</button>
+      <button class="btn btn--primary" id="modalGuardar" type="button">Guardar ajuste</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/inventario.js"></script>
+</body>
+</html>

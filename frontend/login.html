@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión · Mercado VIVA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+  <main class="login-layout">
+    <!-- Panel izquierdo: formulario -->
+    <section class="login-panel">
+      <div class="login-panel__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__name">MERCADO <strong>VIVA</strong></span>
+        </div>
+
+        <h1 class="login-title">Bienvenido de nuevo</h1>
+        <p class="login-subtitle">
+          Ingresa tu usuario y contraseña para continuar.
+        </p>
+
+        <form id="form-login" class="login-form" novalidate>
+          <div class="field">
+            <label for="nombre_usuario"
+              >Nombre de usuario<span class="required">*</span></label
+            >
+            <input
+              type="text"
+              id="nombre_usuario"
+              name="nombre_usuario"
+              placeholder="tu.usuario"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contrasena"
+              >Contraseña<span class="required">*</span></label
+            >
+            <div class="input-with-action">
+              <input
+                type="password"
+                id="contrasena"
+                name="contrasena"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="input-action"
+                id="toggle-password"
+                aria-label="Mostrar contraseña"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="field-hint">* Campo obligatorio</div>
+
+          <div id="login-error" class="alert alert--error" role="alert" hidden></div>
+
+          <div class="login-form__row">
+            <a href="#" class="link-muted">Olvidé mi contraseña</a>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--block" id="btn-submit">
+            <span class="btn__label">Iniciar sesión</span>
+          </button>
+        </form>
+
+        <p class="login-footer">
+          ¿Es tu primera vez en Mercado VIVA?
+          <a href="#" class="link">Crea tu cuenta</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Panel derecho: identidad de marca y contexto del MVP -->
+    <aside class="login-hero" aria-hidden="true">
+      <div class="login-hero__pattern"></div>
+      <div class="login-hero__content">
+        <span class="tag tag--omnicanal">[Omnicanal]</span>
+        <h2>Un solo inventario.<br />Cero cancelaciones por stock.</h2>
+        <p>
+          La misma existencia real se valida en tienda física, web y bodega
+          antes de confirmar cada venta.
+        </p>
+
+        <dl class="login-hero__stats">
+          <div class="stat">
+            <dt>Validación de stock</dt>
+            <dd class="tabular-nums">&lt; 1.5 s</dd>
+          </div>
+          <div class="stat">
+            <dt>Disponibilidad objetivo</dt>
+            <dd class="tabular-nums">99.9 %</dd>
+          </div>
+          <div class="stat">
+            <dt>Reserva de checkout</dt>
+            <dd class="tabular-nums">15 min</dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

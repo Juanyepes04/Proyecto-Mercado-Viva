@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercado VIVA · Tienda en línea</title>
+<link rel="stylesheet" href="css/cliente.css">
+</head>
+<body>
+<a class="skip-link" href="#catalogo">Saltar al catálogo</a>
+
+<header class="site-header">
+  <div class="header-row">
+    <a class="brand" href="/" aria-label="Mercado VIVA, ir al inicio">
+      <span class="brand-mark" aria-hidden="true">V</span>
+      <span class="brand-name">Mercado <strong>VIVA</strong></span>
+    </a>
+
+    <div class="sucursal" id="sucursalWrap">
+      <button class="sucursal-btn" id="btnSucursal" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sucursalMenu">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8.5 10 3l7 5.5"/><path d="M4.5 8.5V17h11V8.5"/><path d="M8 17v-5h4v5"/></svg>
+        <span class="sucursal-texto">Comprando en <strong id="sucursalActual">Sucursal Centro</strong></span>
+        <svg class="icon icon-chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+      </button>
+      <div class="sucursal-menu" id="sucursalMenu" role="menu" hidden>
+        <p class="sucursal-menu-titulo">Elegir sucursal</p>
+        <ul id="sucursalLista"></ul>
+      </div>
+    </div>
+
+    <form class="buscador" id="formBuscador" role="search">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m17 17-3.5-3.5"/></svg>
+      <input type="search" id="inputBuscar" placeholder="¿Qué estás buscando?" aria-label="Buscar productos" autocomplete="off">
+    </form>
+
+    <div class="header-acciones">
+      <button class="accion-btn" type="button">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="5" width="14" height="12" rx="1"/><path d="M3 9h14"/><path d="M7 5V3.5h6V5"/></svg>
+        <span>Pedidos</span>
+      </button>
+      <button class="accion-btn" type="button">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3"/><path d="M3.5 17c1-3.3 3.7-5 6.5-5s5.5 1.7 6.5 5"/></svg>
+        <span>Perfil</span>
+      </button>
+      <button class="accion-btn carrito-btn" id="btnCarrito" type="button" aria-haspopup="dialog" aria-controls="carritoDrawer" aria-expanded="false">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h2l1.6 9.6a1.5 1.5 0 0 0 1.5 1.25h6.2a1.5 1.5 0 0 0 1.48-1.24L17 7H5.3"/><circle cx="8.5" cy="17.2" r="1"/><circle cx="14.5" cy="17.2" r="1"/></svg>
+        <span class="carrito-total mono" id="carritoTotalHeader">$0</span>
+        <span class="carrito-count" id="carritoCount">0</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="categoria-nav" id="categoriaNav" aria-label="Categorías de productos"></nav>
+</header>
+
+<main id="catalogo">
+  <div id="vistaCatalogo">
+    <div class="catalogo-mensaje" id="resultadosInfo" hidden></div>
+    <div id="secciones"></div>
+  </div>
+
+  <section class="vista-pago" id="vistaPago" hidden aria-labelledby="pagoTitulo">
+    <div class="pago-contenedor">
+      <div class="pago-principal">
+        <button class="pago-volver" id="btnCancelarPago" type="button">
+          <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m12 4-6 6 6 6"/></svg>
+          Volver al carrito
+        </button>
+        <h1 id="pagoTitulo">Confirma tu pago</h1>
+
+        <div class="reserva-banner" id="reservaBanner">
+          <div class="reserva-info">
+            <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 2"/></svg>
+            <div>
+              <p class="reserva-titulo">Reservamos tus productos</p>
+              <p class="reserva-texto">Tienes <span class="mono" id="reservaTiempo">05:00</span> para completar el pago antes de liberar el inventario a otros clientes.</p>
+            </div>
+          </div>
+          <div class="reserva-barra"><div class="reserva-barra-progreso" id="reservaBarra"></div></div>
+        </div>
+
+        <div class="pago-bloque">
+          <h2>Entrega</h2>
+          <div class="pago-entrega">
+            <div>
+              <p class="pago-entrega-titulo">Sucursal Centro · Domicilio</p>
+              <p class="pago-entrega-direccion">Calle 10 # 43-12, Medellín</p>
+            </div>
+            <button type="button" class="pago-link">Cambiar</button>
+          </div>
+        </div>
+
+        <div class="pago-bloque">
+          <h2>Método de pago</h2>
+          <div class="metodos-pago" id="metodosPago">
+            <label class="metodo-pago seleccionado">
+              <input type="radio" name="metodoPago" value="tarjeta" checked>
+              <span>Tarjeta de crédito / débito</span>
+            </label>
+            <label class="metodo-pago">
+              <input type="radio" name="metodoPago" value="pse">
+              <span>PSE</span>
+            </label>
+            <label class="metodo-pago">
+              <input type="radio" name="metodoPago" value="contraentrega">
+              <span>Pago contraentrega</span>
+            </label>
+          </div>
+
+          <div class="pago-tarjeta-campos" id="camposTarjeta">
+            <label class="campo">
+              <span>Número de tarjeta</span>
+              <input type="text" id="tarjetaNumero" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000">
+            </label>
+            <div class="campo-fila">
+              <label class="campo">
+                <span>Vencimiento</span>
+                <input type="text" id="tarjetaVencimiento" maxlength="5" placeholder="MM/AA">
+              </label>
+              <label class="campo">
+                <span>CVV</span>
+                <input type="text" id="tarjetaCvv" inputmode="numeric" maxlength="3" placeholder="123">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pago-resumen">
+        <h2>Resumen del pedido</h2>
+        <div id="pagoItems" class="pago-items"></div>
+        <div class="pago-fila"><span>Subtotal</span><span class="mono" id="pagoSubtotal">$0</span></div>
+        <div class="pago-fila"><span>Envío</span><span class="mono">Gratis</span></div>
+        <div class="pago-fila pago-total"><span>Total</span><span class="mono" id="pagoTotal">$0</span></div>
+        <button class="btn-confirmar-pago" id="btnConfirmarPago" type="button">Confirmar pago</button>
+        <p class="pago-seguro">Pago simulado — no se procesa ningún cargo real.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="vista-confirmacion" id="vistaConfirmacion" hidden>
+    <div class="confirmacion-tarjeta">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="m6.5 10.5 2.5 2.5 5-5.5"/></svg>
+      <h1>¡Pago confirmado!</h1>
+      <p>Tu pedido <strong id="confirmacionPedidoId">#0000</strong> pasó a alistamiento. Te avisaremos cuando esté en camino.</p>
+      <button class="btn-volver-tienda" id="btnVolverTienda" type="button">Volver a la tienda</button>
+    </div>
+  </section>
+</main>
+
+<div class="carrito-overlay" id="carritoOverlay" hidden></div>
+<aside class="carrito-drawer" id="carritoDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras" aria-hidden="true">
+  <div class="carrito-header">
+    <h2>Tu carrito</h2>
+    <button class="carrito-cerrar" id="btnCerrarCarrito" type="button" aria-label="Cerrar carrito">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg>
+    </button>
+  </div>
+  <div class="carrito-body" id="carritoBody">
+    <p class="carrito-vacio" id="carritoVacio">Tu carrito está vacío. Agrega productos para verlos aquí, agrupados por sección de despacho.</p>
+  </div>
+  <div class="carrito-footer">
+    <div class="carrito-fila"><span>Subtotal</span><span class="mono" id="carritoSubtotal">$0</span></div>
+    <p class="carrito-nota">El envío y los descuentos se calculan al finalizar la compra.</p>
+    <button class="btn-checkout" id="btnCheckout" type="button" disabled>Ir a pagar</button>
+  </div>
+</aside>
+
+<script src="js/api.js"></script>
+<script src="js/cliente.js" defer></script>
+</body>
+</html>

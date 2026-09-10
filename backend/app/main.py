@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from .routes.usuarios import router as usuarios_router
 from .routes.productos import router as productos_router
@@ -10,6 +11,17 @@ app = FastAPI(
     title="Mercado VIVA API",
     description="Backend del MVP de Mercado VIVA",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(usuarios_router)

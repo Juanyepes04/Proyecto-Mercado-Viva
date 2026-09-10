@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Mercado VIVA · Terminal POS</title>
+<link rel="stylesheet" href="css/cajero.css" />
+</head>
+<body>
+
+<header class="pos-header">
+  <div class="pos-header__brand">
+    Mercado <strong>VIVA</strong>
+    <span class="pos-header__tag">POS</span>
+  </div>
+
+  <div class="pos-header__caja">
+    <span class="pos-header__caja-id">Caja <strong id="cajaNumero">—</strong></span>
+    <span class="pos-header__separador" aria-hidden="true">·</span>
+    <span id="cajeroNombre">Cargando cajero…</span>
+  </div>
+
+  <div class="pos-header__spacer"></div>
+
+  <div class="pos-header__pendientes" id="bloquePendientes" hidden>
+    <span class="pendientes-badge" id="pendientesCount">0</span>
+    <span>pendientes de sincronizar</span>
+  </div>
+
+  <div class="pos-header__status" title="Estado de la conexión">
+    <span class="status-dot" id="estadoConexion" data-state="online"></span>
+    <span id="estadoConexionTexto">Conectado</span>
+  </div>
+
+  <time class="pos-header__clock" id="reloj">--:--</time>
+
+  <button class="btn btn--ghost" id="btnCerrarCaja" type="button">Cerrar caja</button>
+</header>
+
+<div class="cierre-caja-bar" id="cierreCajaBar" hidden>
+  <label for="inputSaldoFinal">Saldo final real (efectivo contado en caja)</label>
+  <input type="number" id="inputSaldoFinal" min="0" step="100" placeholder="0" inputmode="decimal" />
+  <button class="btn btn--primary btn--sm" id="btnConfirmarCierre" type="button">Confirmar cierre</button>
+  <button class="btn btn--outline btn--sm" id="btnCancelarCierre" type="button">Cancelar</button>
+</div>
+
+<main class="pos-layout">
+
+  <!-- ============ PANEL IZQUIERDO (65-70%): escaneo, cantidad, carrito ============ -->
+  <section class="pos-panel pos-panel--principal" aria-label="Captura de venta">
+
+    <div class="scan-bar">
+      <span class="scan-bar__icon" aria-hidden="true">⌕</span>
+      <input
+        id="inputEscaneo"
+        class="scan-bar__input"
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Escanear código de barras o buscar por nombre…"
+        aria-label="Código de barras o nombre de producto"
+        autofocus
+      />
+      <kbd class="shortcut-hint">F2</kbd>
+    </div>
+
+    <ul id="resultadosBusqueda" class="search-results" hidden></ul>
+
+    <div class="cart-table-wrap">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th scope="col">SKU</th>
+            <th scope="col">Producto</th>
+            <th scope="col" class="num">Cant.</th>
+            <th scope="col" class="num">P. Unit.</th>
+            <th scope="col" class="num">Subtotal</th>
+            <th scope="col" class="col-accion"><span class="sr-only">Eliminar</span></th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoCarrito"></tbody>
+      </table>
+
+      <p class="cart-empty" id="carritoVacio">
+        Sin artículos escaneados. Escanea un producto para comenzar.
+      </p>
+    </div>
+
+    <div class="numpad" aria-label="Editar cantidad de la línea seleccionada">
+      <div class="numpad__display">
+        <span class="numpad__label">Cantidad</span>
+        <span class="numpad__valor" id="numpadValor">0</span>
+      </div>
+      <div class="numpad__grid">
+        <button type="button" class="numpad__key" data-key="7">7</button>
+        <button type="button" class="numpad__key" data-key="8">8</button>
+        <button type="button" class="numpad__key" data-key="9">9</button>
+        <button type="button" class="numpad__key" data-key="4">4</button>
+        <button type="button" class="numpad__key" data-key="5">5</button>
+        <button type="button" class="numpad__key" data-key="6">6</button>
+        <button type="button" class="numpad__key" data-key="1">1</button>
+        <button type="button" class="numpad__key" data-key="2">2</button>
+        <button type="button" class="numpad__key" data-key="3">3</button>
+        <button type="button" class="numpad__key numpad__key--clear" data-key="C">C</button>
+        <button type="button" class="numpad__key" data-key="0">0</button>
+        <button type="button" class="numpad__key" data-key="back">⌫</button>
+      </div>
+      <button type="button" class="btn btn--primary numpad__aplicar" id="btnAplicarNumpad">
+        Aplicar a la línea seleccionada
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ============ PANEL DERECHO (30-35%): resumen, pago, devoluciones ============ -->
+  <aside class="pos-panel pos-panel--resumen" aria-label="Resumen de cobro">
+
+    <div class="resumen-card">
+      <dl class="resumen-lista">
+        <div class="resumen-fila">
+          <dt>Subtotal</dt>
+          <dd id="totalSubtotal">$ 0</dd>
+        </div>
+        <div class="resumen-fila">
+          <dt>IVA incluido (19%)</dt>
+          <dd id="totalIva">$ 0</dd>
+        </div>
+        <div class="resumen-fila">
+          <dt>Descuentos</dt>
+          <dd id="totalDescuento">$ 0</dd>
+        </div>
+      </dl>
+      <div class="resumen-total">
+        <span>Total</span>
+        <span id="totalGeneral">$ 0</span>
+      </div>
+    </div>
+
+    <div class="panel-bloque">
+      <h2 class="panel-titulo">Método de pago</h2>
+      <div class="metodo-pago__opciones" id="metodoPagoOpciones">
+        <button type="button" class="metodo-btn" data-metodo="efectivo">Efectivo</button>
+        <button type="button" class="metodo-btn" data-metodo="tarjeta">Tarjeta</button>
+        <button type="button" class="metodo-btn" data-metodo="saldo">Saldo simulado</button>
+      </div>
+    </div>
+
+    <div class="panel-bloque">
+      <h2 class="panel-titulo">Devoluciones · validar ticket</h2>
+      <div class="devoluciones__form">
+        <input id="inputTicketId" type="text" placeholder="ID de pedido" autocomplete="off" />
+        <button type="button" class="btn btn--outline btn--sm" id="btnValidarTicket">
+          Validar <kbd>F8</kbd>
+        </button>
+      </div>
+      <p id="devolucionesResultado" class="devoluciones__resultado" hidden></p>
+    </div>
+
+    <div class="pos-panel__footer">
+      <p id="mensajeEstado" class="mensaje-estado" hidden></p>
+      <button type="button" class="btn btn--cobrar" id="btnCobrar" disabled>
+        <span>Cobrar</span>
+        <span class="total-chip" id="btnCobrarTotal">$ 0</span>
+        <kbd>Enter</kbd>
+      </button>
+    </div>
+
+  </aside>
+
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/cajero.js"></script>
+</body>
+</html>
