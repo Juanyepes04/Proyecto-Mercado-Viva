@@ -4,6 +4,7 @@ from ..models.pedido import Pedido
 from ..models.detalle_pedido import DetallePedido
 from ..models.producto import Producto
 from ..schemas.pedido import PedidoCrear
+from .reservas_stock import crear_reserva
 
 
 def crear_pedido(datos: PedidoCrear, db: Session):
@@ -53,6 +54,14 @@ def crear_pedido(datos: PedidoCrear, db: Session):
             )
 
             db.add(nuevo_detalle)
+            db.flush()
+
+            crear_reserva(
+                detalle_pedido_id=nuevo_detalle.id,
+                producto_id=producto.id,
+                cantidad=detalle.cantidad,
+                db=db
+            )
 
         pedido.total = total
 
@@ -64,3 +73,14 @@ def crear_pedido(datos: PedidoCrear, db: Session):
     except Exception:
         db.rollback()
         raise
+
+def listar_pedidos(db: Session):
+    return db.query(Pedido).order_by(
+        Pedido.creado_en.desc()
+    ).all()
+
+
+def buscar_pedido(pedido_id, db: Session):
+    return db.query(Pedido).filter(
+        Pedido.id == pedido_id
+    ).first()
