@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoading(true);
 
     try {
-      const data = await vivaApiRequest("/usuarios/login", {
+      const data = await vivaApiRequest("/api/v1/auth/login", {
         method: "POST",
         body: JSON.stringify({ nombre_usuario, contrasena }),
       });
