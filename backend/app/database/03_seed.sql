@@ -22,23 +22,23 @@ insert into categorias (id, nombre) values
 -- USUARIOS: 3 clientes web
 -- ---------------------------------------------------------
 insert into usuarios (id, nombre, numero_identidad, nombre_usuario, contrasena_hash, correo, rol, direccion, saldo_simulado) values
-    ('22222222-0000-0000-0000-000000000001', 'Cliente Uno',   '1000000001', 'cliente1', 'CAMBIAR_HASH_1', 'cliente1@mercadoviva.test', 'cliente', 'Calle 1 # 1-01', 200000),
-    ('22222222-0000-0000-0000-000000000002', 'Cliente Dos',   '1000000002', 'cliente2', 'CAMBIAR_HASH_2', 'cliente2@mercadoviva.test', 'cliente', 'Calle 2 # 2-02', 150000),
-    ('22222222-0000-0000-0000-000000000003', 'Cliente Tres',  '1000000003', 'cliente3', 'CAMBIAR_HASH_3', 'cliente3@mercadoviva.test', 'cliente', 'Calle 3 # 3-03', 100000);
+    ('22222222-0000-0000-0000-000000000001', 'Cliente Uno',   '1000000001', 'cliente1', '$2b$12$RaldPclU7Y4Zg7YWsS5FtebIOOJWuNemu45gzMbevTzlauW3MN0eW', 'cliente1@mercadoviva.test', 'cliente', 'Calle 1 # 1-01', 200000),
+    ('22222222-0000-0000-0000-000000000002', 'Cliente Dos',   '1000000002', 'cliente2', '$2b$12$RaldPclU7Y4Zg7YWsS5FtebIOOJWuNemu45gzMbevTzlauW3MN0eW', 'cliente2@mercadoviva.test', 'cliente', 'Calle 2 # 2-02', 150000),
+    ('22222222-0000-0000-0000-000000000003', 'Cliente Tres',  '1000000003', 'cliente3', '$2b$12$RaldPclU7Y4Zg7YWsS5FtebIOOJWuNemu45gzMbevTzlauW3MN0eW', 'cliente3@mercadoviva.test', 'cliente', 'Calle 3 # 3-03', 100000);
 
 -- ---------------------------------------------------------
 -- USUARIOS: 3 cajeros
 -- ---------------------------------------------------------
 insert into usuarios (id, nombre, numero_identidad, nombre_usuario, contrasena_hash, correo, rol, direccion) values
-    ('33333333-0000-0000-0000-000000000001', 'Cajero Uno',   '2000000001', 'cajero1', 'CAMBIAR_HASH_4', 'cajero1@mercadoviva.test', 'cajero', 'Calle 4 # 4-04'),
-    ('33333333-0000-0000-0000-000000000002', 'Cajero Dos',   '2000000002', 'cajero2', 'CAMBIAR_HASH_5', 'cajero2@mercadoviva.test', 'cajero', 'Calle 5 # 5-05'),
-    ('33333333-0000-0000-0000-000000000003', 'Cajero Tres',  '2000000003', 'cajero3', 'CAMBIAR_HASH_6', 'cajero3@mercadoviva.test', 'cajero', 'Calle 6 # 6-06');
+    ('33333333-0000-0000-0000-000000000001', 'Cajero Uno',   '2000000001', 'cajero1', '$2b$12$C3Chy3u4SKqCyg02Ba9UGeORDMlvpKJ8qHkWxOC6Dh8j5dWErsYpu', 'cajero1@mercadoviva.test', 'cajero', 'Calle 4 # 4-04'),
+    ('33333333-0000-0000-0000-000000000002', 'Cajero Dos',   '2000000002', 'cajero2', '$2b$12$C3Chy3u4SKqCyg02Ba9UGeORDMlvpKJ8qHkWxOC6Dh8j5dWErsYpu', 'cajero2@mercadoviva.test', 'cajero', 'Calle 5 # 5-05'),
+    ('33333333-0000-0000-0000-000000000003', 'Cajero Tres',  '2000000003', 'cajero3', '$2b$12$C3Chy3u4SKqCyg02Ba9UGeORDMlvpKJ8qHkWxOC6Dh8j5dWErsYpu', 'cajero3@mercadoviva.test', 'cajero', 'Calle 6 # 6-06');
 
 -- ---------------------------------------------------------
 -- USUARIOS: 1 abastecedor (agrega más si tu equipo lo necesita)
 -- ---------------------------------------------------------
 insert into usuarios (id, nombre, numero_identidad, nombre_usuario, contrasena_hash, correo, rol, direccion) values
-    ('44444444-0000-0000-0000-000000000001', 'Abastecedor Uno', '3000000001', 'abastecedor1', 'CAMBIAR_HASH_7', 'abastecedor1@mercadoviva.test', 'abastecedor', 'Bodega Central');
+    ('44444444-0000-0000-0000-000000000001', 'Abastecedor Uno', '3000000001', 'abastecedor1', '$2b$12$0hwgPCKDPSiXnA8ONvNAnOh3eS9KDNgdGpJJN28B2KmNP8WyptNdi', 'abastecedor1@mercadoviva.test', 'abastecedor', 'Bodega Central');
 
 -- ---------------------------------------------------------
 -- PRODUCTOS DE EJEMPLO
