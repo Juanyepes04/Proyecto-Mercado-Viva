@@ -14,7 +14,7 @@ const ICONOS = {
   snacks: '<svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 6 8 2h4l2 4"/><path d="M5 6h10l1 10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2L5 6Z"/></svg>'
 };
 
-const CATEGORIAS = [
+let CATEGORIAS = [
   { id: 'frutas-verduras', nombre: 'Frutas y Verduras' },
   { id: 'carnicos', nombre: 'Cárnicos' },
   { id: 'lacteos-huevos', nombre: 'Lácteos y Huevos' },
@@ -24,7 +24,7 @@ const CATEGORIAS = [
   { id: 'snacks', nombre: 'Snacks y Dulces' }
 ];
 
-const PRODUCTOS = [
+let PRODUCTOS = [
   { id: 'p01', categoriaId: 'frutas-verduras', sku: 'FV-0001', marca: 'Finca Local', nombre: 'Aguacate Hass', presentacion: 'Unidad ~200 g', unidadMedida: 'kg', precio: 2900, precioPorUnidad: 14500, stockCantidad: 34 },
   { id: 'p02', categoriaId: 'frutas-verduras', sku: 'FV-0002', marca: 'Finca Local', nombre: 'Banano Criollo', presentacion: '1 kg', unidadMedida: 'kg', precio: 2600, precioPorUnidad: 2600, stockCantidad: 6 },
   { id: 'p03', categoriaId: 'frutas-verduras', sku: 'FV-0003', marca: 'Huerta Andina', nombre: 'Tomate Chonto', presentacion: '1 kg', unidadMedida: 'kg', precio: 3200, precioPorUnidad: 3200, stockCantidad: 22 },
@@ -114,6 +114,43 @@ function imagenProducto(nombre, tamano) {
   return `https://placehold.co/${tamano}x${tamano}/f4f4f5/52525b?text=${encodeURIComponent(nombre)}`;
 }
 
+function convertirSlug(texto) {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+async function cargarCatalogo() {
+  const productos = await vivaApiRequest('/productos/');
+  const categorias = new Map();
+
+  PRODUCTOS = productos.map(producto => {
+    const categoriaNombre = producto.categoria_nombre || 'Sin categoría';
+    const categoriaId = convertirSlug(categoriaNombre);
+    categorias.set(categoriaId, categoriaNombre);
+
+    return {
+      id: String(producto.id),
+      categoriaId,
+      sku: producto.identificador,
+      marca: '',
+      nombre: producto.nombre,
+      presentacion: '',
+      unidadMedida: 'und',
+      precio: Number(producto.valor),
+      precioPorUnidad: Number(producto.valor),
+      stockCantidad: Number(producto.stock_actual || 0),
+      stockReservado: Number(producto.stock_reservado || 0),
+      fotoUrl: producto.foto_url
+    };
+  });
+
+  CATEGORIAS = [...categorias].map(([id, nombre]) => ({ id, nombre }));
+}
+
 /* ---------- catálogo ---------- */
 
 function renderCategoriaNav() {
@@ -143,7 +180,7 @@ function crearTarjetaProducto(producto) {
 
   tarjeta.innerHTML = `
     <div class="producto-media">
-      <img src="${imagenProducto(producto.nombre, 300)}" alt="${producto.nombre}" loading="lazy">
+      <img src="${producto.fotoUrl || imagenProducto(producto.nombre, 300)}" alt="${producto.nombre}" loading="lazy">
       <span class="badge-stock ${estado.clase}">${estado.etiqueta}</span>
     </div>
     <div class="producto-info">
@@ -653,7 +690,15 @@ function inicializarBusqueda() {
 
 /* ---------- inicio ---------- */
 
-function inicializar() {
+async function inicializar() {
+  try {
+    await cargarCatalogo();
+  } catch (error) {
+    PRODUCTOS = [];
+    CATEGORIAS = [];
+    alert(`No fue posible cargar los productos: ${error.message}`);
+  }
+
   renderCategoriaNav();
   inicializarSucursalEventos();
   inicializarBusqueda();
