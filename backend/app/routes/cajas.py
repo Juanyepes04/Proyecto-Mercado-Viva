@@ -8,6 +8,9 @@ from ..schemas.caja import CajaAbrir, CajaCerrar, CajaRespuesta
 from ..services.cajas import abrir_caja, cerrar_caja
 
 
+from ..core.deps import require_roles
+
+
 router = APIRouter(
     prefix="/cajas",
     tags=["Cajas"]
@@ -17,7 +20,8 @@ router = APIRouter(
 @router.post("/abrir", response_model=CajaRespuesta)
 def abrir(
     datos: CajaAbrir,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _usuario_cajero = Depends(require_roles("cajero", "admin"))
 ):
     try:
         return abrir_caja(
@@ -36,7 +40,8 @@ def abrir(
 def cerrar(
     caja_id: UUID,
     datos: CajaCerrar,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _usuario_cajero = Depends(require_roles("cajero", "admin"))
 ):
     try:
         return cerrar_caja(
@@ -48,4 +53,4 @@ def cerrar(
         raise HTTPException(
             status_code=400,
             detail=str(e)
-        )
+        )

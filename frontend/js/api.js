@@ -13,13 +13,18 @@ const VIVA_API_BASE_URL = "http://localhost:8000";
  * la respuesta no es exitosa.
  */
 async function vivaApiRequest(path, options = {}) {
+  const token = localStorage.getItem("viva_token");
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(options.headers || {}),
+  };
+
   const response = await fetch(`${VIVA_API_BASE_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
     ...options,
+    headers,
   });
+
 
   let data = null;
   try {

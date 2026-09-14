@@ -34,14 +34,11 @@
     </form>
 
     <div class="header-acciones">
-      <button class="accion-btn" type="button">
-        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="5" width="14" height="12" rx="1"/><path d="M3 9h14"/><path d="M7 5V3.5h6V5"/></svg>
-        <span>Pedidos</span>
-      </button>
-      <button class="accion-btn" type="button">
-        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3"/><path d="M3.5 17c1-3.3 3.7-5 6.5-5s5.5 1.7 6.5 5"/></svg>
-        <span>Perfil</span>
-      </button>
+      <div class="usuario-badge" id="usuarioBadge">
+        <span class="usuario-nombre" id="usuarioNombre">Cargando...</span>
+        <span class="usuario-saldo mono" id="usuarioSaldo">$0</span>
+        <button class="btn-recargar-mini" id="btnAbrirRecarga" type="button" title="Recargar saldo">+ Recargar</button>
+      </div>
       <button class="accion-btn carrito-btn" id="btnCarrito" type="button" aria-haspopup="dialog" aria-controls="carritoDrawer" aria-expanded="false">
         <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h2l1.6 9.6a1.5 1.5 0 0 0 1.5 1.25h6.2a1.5 1.5 0 0 0 1.48-1.24L17 7H5.3"/><circle cx="8.5" cy="17.2" r="1"/><circle cx="14.5" cy="17.2" r="1"/></svg>
         <span class="carrito-total mono" id="carritoTotalHeader">$0</span>
@@ -94,7 +91,11 @@
           <h2>Método de pago</h2>
           <div class="metodos-pago" id="metodosPago">
             <label class="metodo-pago seleccionado">
-              <input type="radio" name="metodoPago" value="tarjeta" checked>
+              <input type="radio" name="metodoPago" value="saldo" checked>
+              <span>Saldo simulado VIVA (<strong id="pagoSaldoDisponible">$0</strong>)</span>
+            </label>
+            <label class="metodo-pago">
+              <input type="radio" name="metodoPago" value="tarjeta">
               <span>Tarjeta de crédito / débito</span>
             </label>
             <label class="metodo-pago">
@@ -107,7 +108,7 @@
             </label>
           </div>
 
-          <div class="pago-tarjeta-campos" id="camposTarjeta">
+          <div class="pago-tarjeta-campos" id="camposTarjeta" hidden>
             <label class="campo">
               <span>Número de tarjeta</span>
               <input type="text" id="tarjetaNumero" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000">
@@ -166,7 +167,47 @@
   </div>
 </aside>
 
+<!-- Modal Recarga de Saldo -->
+<div class="modal-backdrop" id="modalRecargaBackdrop" hidden>
+  <div class="modal-recarga" role="dialog" aria-modal="true" aria-labelledby="modalRecargaTitulo">
+    <h3 id="modalRecargaTitulo">Recargar Saldo Simulado</h3>
+    <p class="modal-subtexto">Agrega fondos a tu cuenta para realizar compras inmediatas en la tienda web.</p>
+    <form id="formRecargaSaldo">
+      <label class="campo">
+        <span>Monto a recargar (COP)</span>
+        <input type="number" id="montoRecarga" min="1000" step="1000" value="50000" required>
+      </label>
+      <div class="recarga-rapida">
+        <button type="button" class="chip-monto" data-monto="20000">+$20.000</button>
+        <button type="button" class="chip-monto" data-monto="50000">+$50.000</button>
+        <button type="button" class="chip-monto" data-monto="100000">+$100.000</button>
+      </div>
+      <div class="modal-acciones">
+        <button type="button" class="btn btn-secundario" id="btnCerrarModalRecarga">Cancelar</button>
+        <button type="submit" class="btn btn-primario" id="btnConfirmarRecarga">Recargar ahora</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Footer del Canal Público -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <strong>Mercado VIVA</strong> · Comercio minorista inteligente en tiempo real.
+    </div>
+    <div>
+      <a href="/sistema/login" class="site-footer-staff" id="btnPortalVivaMarket" title="Acceso para cajeros, abastecedores y administradores">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px; stroke-width: 2.2;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>PORTAL VIVAMARKET</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-contenedor" id="toastContenedor" role="status" aria-live="polite"></div>
+
 <script src="js/api.js"></script>
-<script src="js/cliente.js" defer></script>
+<script src="js/cliente.js"></script>
 </body>
 </html>

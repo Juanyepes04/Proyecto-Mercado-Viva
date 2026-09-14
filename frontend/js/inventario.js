@@ -9,13 +9,28 @@
   "use strict";
 
   // ------------------------------------------------------
+  // Verificación de Acceso / Rol
+  // ------------------------------------------------------
+  const usuarioSesion = JSON.parse(localStorage.getItem("viva_usuario") || "null");
+  if (!usuarioSesion || (usuarioSesion.rol !== "abastecedor" && usuarioSesion.rol !== "admin")) {
+    alert("Acceso denegado: este portal requiere rol de Abastecedor o Administrador.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // ------------------------------------------------------
   // Config
   // ------------------------------------------------------
-
-  // Ajusta esta URL según el entorno (local/staging/prod).
-  // Puede sobreescribirse definiendo window.MERCADO_VIVA_API_URL
-  // antes de cargar este script.
   const API_BASE_URL = window.MERCADO_VIVA_API_URL || "http://localhost:8000";
+
+  function authHeaders() {
+    const token = localStorage.getItem("viva_token");
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+  }
+
 
   // Mapeo temporal de categoría → nombre. El backend aún no expone
   // GET /categorias, así que se usan los UUID reales del seed
@@ -447,7 +462,7 @@
     try {
       const resp = await fetch(`${API_BASE_URL}/productos/${modalProductoId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ stock_actual: stockActual, stock_minimo: stockMinimo }),
       });
       if (!resp.ok) throw new Error(await resp.text());
@@ -691,7 +706,7 @@
 
         const resp = await fetch(`${API_BASE_URL}/productos/${item.productoId}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: authHeaders(),
           body: JSON.stringify({ stock_actual: nuevoStock }),
         });
         if (!resp.ok) throw new Error(await resp.text());
