@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso de Colaboradores · Mercado VIVA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/login.css">
+  <style>
+    .login-layout {
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+    .badge-sistema {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: #18181b;
+      color: #fafafa;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .colaborador-aviso {
+      margin-top: 24px;
+      padding: 12px;
+      border-radius: 6px;
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      font-size: 12.5px;
+      color: #71717a;
+      line-height: 1.4;
+    }
+    .colaborador-aviso strong {
+      color: #18181b;
+    }
+    .link-tienda {
+      color: var(--accent, #059669);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .link-tienda:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <main class="login-layout">
+    <!-- Panel Izquierdo: Formulario de Empleados -->
+    <section class="login-panel">
+      <div class="login-panel__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__name">MERCADO <strong>VIVA</strong></span>
+        </div>
+
+        <span class="badge-sistema">Terminal Interna</span>
+        <h1 class="login-title">Portal de Colaboradores</h1>
+        <p class="login-subtitle">
+          Ingresa con tu identificador institucional para acceder a tu estación de trabajo.
+        </p>
+
+        <div id="alerta-error" class="alert alert--error" role="alert" hidden></div>
+
+        <form id="form-login-empleados" class="login-form" novalidate>
+          <div class="field">
+            <label for="nombre_usuario">Usuario institucional<span class="required">*</span></label>
+            <input
+              type="text"
+              id="nombre_usuario"
+              name="nombre_usuario"
+              placeholder="ej. cajero1, abastecedor1"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contrasena">Contraseña de acceso<span class="required">*</span></label>
+            <div class="input-with-action">
+              <input
+                type="password"
+                id="contrasena"
+                name="contrasena"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="input-action"
+                id="toggle-password"
+                aria-label="Mostrar contraseña"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="field-hint">* Campo obligatorio para registro de auditoría</div>
+
+          <button type="submit" class="btn btn--primary btn--block" id="btn-ingresar">
+            <span class="btn__label">Ingresar a terminal</span>
+          </button>
+        </form>
+
+        <div class="colaborador-aviso">
+          <strong>¿Eres cliente de Mercado VIVA?</strong><br>
+          Este portal es de uso exclusivo para personal operativo y administrativo. 
+          <a href="/" class="link-tienda">Volver a la tienda en línea</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel Derecho: Contexto Operativo y Terminales -->
+    <aside class="login-hero" aria-hidden="true">
+      <div class="login-hero__pattern"></div>
+      <div class="login-hero__content">
+        <span class="tag tag--omnicanal">[SISTEMA CENTRAL]</span>
+        <h2>Operaciones en tiempo real.<br />Cero discrepancias.</h2>
+        <p>
+          Las terminales de caja, almacén y administración operan sincronizadas 
+          con el libro de órdenes y existencias de Supabase.
+        </p>
+
+        <dl class="login-hero__stats">
+          <div class="stat">
+            <dt>Terminal POS</dt>
+            <dd>Cajero</dd>
+          </div>
+          <div class="stat">
+            <dt>Gestión Stock</dt>
+            <dd>Bodega</dd>
+          </div>
+          <div class="stat">
+            <dt>Auditoría</dt>
+            <dd>Admin</dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/sistema/js/login_empleados.js"></script>
+</body>
+</html>

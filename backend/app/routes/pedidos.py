@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..schemas.pedido import PedidoCrear, PedidoRespuesta
-from ..services.pedidos import crear_pedido
 from ..services.ventas import confirmar_pedido
 from ..services.pedidos import crear_pedido, listar_pedidos, buscar_pedido
 
@@ -45,20 +44,6 @@ def confirmar_venta(
             detail=str(e)
         )
 
-    @router.post("/{pedido_id}/confirmar", response_model=PedidoRespuesta)
-    def confirmar_venta(
-        pedido_id: UUID,
-        db: Session = Depends(get_db)
-    ):
-        try:
-            return confirmar_pedido(pedido_id, db)
-
-        except ValueError as e:
-            raise HTTPException(
-                status_code=400,
-                detail=str(e)
-            )
-
 @router.get("/", response_model=list[PedidoRespuesta])
 def obtener_pedidos(db: Session = Depends(get_db)):
     return listar_pedidos(db)
@@ -78,3 +63,20 @@ def obtener_pedido(
         )
 
     return pedido
+
+
+@router.post("/liberar-expiradas")
+def ejecutar_liberacion_expiradas(db: Session = Depends(get_db)):
+    from ..services.reservas_stock import liberar_reservas_expiradas
+
+    try:
+        liberadas = liberar_reservas_expiradas(db)
+        return {
+            "mensaje": "Proceso de liberación de reservas completado",
+            "reservas_liberadas": liberadas
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al liberar reservas: {e}"
+        )

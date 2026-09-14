@@ -324,3 +324,347 @@ body.en-pago .header-acciones { display: none; }
   .producto-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
   .carrito-drawer { width: 100%; max-width: 100%; }
 }
+
+/* ---------- Usuario Badge, Login & Recarga ---------- */
+.btn-login-cliente {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+.btn-login-cliente:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.usuario-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f4f4f5;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.usuario-nombre {
+  font-weight: 600;
+  color: var(--text);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.usuario-saldo {
+  font-size: 12.5px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+.btn-recargar-mini {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+.btn-recargar-mini:hover {
+  background: var(--accent-strong);
+}
+.btn-logout-mini {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 11.5px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+}
+.btn-logout-mini:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ---------- Modal Login de Clientes ---------- */
+.modal-login {
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+  max-width: 420px;
+  width: 100%;
+  padding: 28px;
+  animation: modalEntrar 180ms ease;
+}
+.modal-login h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.modal-login .alerta-login-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  margin-bottom: 14px;
+}
+.modal-login .login-field {
+  margin-bottom: 14px;
+}
+.modal-login .login-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.modal-login .login-field input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.modal-login .login-field input:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+.modal-login .demo-helper {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: #64748b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-login .demo-helper button {
+  background: #e2e8f0;
+  border: none;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.modal-login .demo-helper button:hover {
+  background: #cbd5e1;
+}
+.modal-login .staff-link-box {
+  margin-top: 18px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.modal-login .staff-link-box a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.modal-login .staff-link-box a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Storefront Footer ---------- */
+.site-footer {
+  margin-top: 60px;
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+  padding: 30px 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.site-footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.site-footer-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+}
+.site-footer-link:hover {
+  color: var(--accent);
+}
+.site-footer-staff {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 1px solid #18181b;
+  border-radius: var(--radius-sm);
+  background: #18181b;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all 180ms ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.site-footer-staff:hover {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* ---------- Modal Recarga de Saldo ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+.modal-backdrop[hidden] {
+  display: none;
+}
+.modal-recarga {
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  padding: 24px;
+  animation: modalEntrar 180ms ease;
+}
+@keyframes modalEntrar {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.modal-recarga h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+.modal-subtexto {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+.recarga-rapida {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+.chip-monto {
+  flex: 1;
+  background: #f4f4f5;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 120ms ease;
+}
+.chip-monto:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+.btn-secundario {
+  background: #f4f4f5;
+  color: var(--text);
+}
+.btn-secundario:hover {
+  background: #e4e4e7;
+}
+.btn-primario {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primario:hover {
+  background: var(--accent-strong);
+}
+
+/* ---------- Toast Notifications ---------- */
+.toast-contenedor {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 120;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  background: #18181b;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: toastEntrar 200ms ease;
+}
+.toast.toast--error {
+  background: var(--danger-text);
+}
+.toast.toast--success {
+  background: var(--accent-strong);
+}
+@keyframes toastEntrar {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.catalogo-cargando {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 15px;
+}

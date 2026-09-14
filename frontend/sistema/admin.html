@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercado VIVA · Panel Administrativo</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .admin-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #f8fafc;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+    }
+    .admin-header {
+      background: #0f172a;
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #10b981;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .admin-logo {
+      background: #10b981;
+      color: #fff;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+    }
+    .admin-title h1 {
+      font-size: 1.25rem;
+      margin: 0;
+      font-weight: 700;
+    }
+    .admin-title span {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    .admin-nav-links {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .admin-nav-btn {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+    }
+    .admin-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+    .admin-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 16px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      padding-left: 16px;
+    }
+    .admin-badge {
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+    .admin-main {
+      padding: 24px;
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      flex: 1;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+    .kpi-title {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 8px 0 4px;
+    }
+    .kpi-subtitle {
+      font-size: 0.8rem;
+      color: #10b981;
+      font-weight: 500;
+    }
+    .section-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+      color: #0f172a;
+    }
+    .action-btn {
+      background: #10b981;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .action-btn:hover {
+      background: #059669;
+    }
+    .action-btn--secondary {
+      background: #3b82f6;
+    }
+    .action-btn--secondary:hover {
+      background: #2563eb;
+    }
+    .action-btn--danger {
+      background: #ef4444;
+    }
+    .action-btn--danger:hover {
+      background: #dc2626;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .data-table th, .data-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .data-table th {
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-badge--activa { background: #dcfce7; color: #15803d; }
+    .status-badge--cerrada { background: #fee2e2; color: #b91c1c; }
+    .status-badge--pendiente { background: #fef3c7; color: #b45309; }
+    .status-badge--pagado { background: #dcfce7; color: #15803d; }
+    .status-badge--cancelado { background: #f1f5f9; color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-header">
+      <div class="admin-brand">
+        <span class="admin-logo">VIVA</span>
+        <div class="admin-title">
+          <h1>Mercado VIVA Admin</h1>
+          <span>Auditoría & Control Operativo Central</span>
+        </div>
+      </div>
+
+      <div class="admin-nav-links">
+        <a href="/sistema/caja" class="admin-nav-btn">Terminal POS</a>
+        <a href="/sistema/inventario" class="admin-nav-btn">Inventario</a>
+        <a href="/" target="_blank" class="admin-nav-btn">Ver Tienda Web ↗</a>
+
+        <div class="admin-user">
+          <span class="admin-badge">Admin</span>
+          <strong id="adminUsername">Administrador</strong>
+          <button class="action-btn action-btn--danger" style="padding: 4px 10px; font-size: 0.8rem;" onclick="cerrarSesionEmpleado()">
+            Salir
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-title">Productos en Catálogo</span>
+          <span class="kpi-value" id="kpiProductos">--</span>
+          <span class="kpi-subtitle">Total SKUs activos</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Alertas de Stock</span>
+          <span class="kpi-value" style="color: #ef4444;" id="kpiBajoStock">--</span>
+          <span class="kpi-subtitle">Bajo stock o quiebre</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Terminales de Caja</span>
+          <span class="kpi-value" id="kpiCajas">--</span>
+          <span class="kpi-subtitle" id="kpiCajasSub">Consultando...</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Liberador de Reservas</span>
+          <span class="kpi-value" style="font-size: 1.3rem; margin-top: 14px;">Automático</span>
+          <span class="kpi-subtitle">Ciclo activo: 60s</span>
+        </div>
+      </div>
+
+      <!-- Herramientas Administrativas -->
+      <div class="section-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Operaciones Críticas de Mantenimiento</h2>
+            <p style="margin: 4px 0 0; font-size: 0.85rem; color: #64748b;">Disparadores manuales de procesos PL/pgSQL y control de inventario</p>
+          </div>
+          <div>
+            <button class="action-btn action-btn--secondary" id="btnLiberarReservas" onclick="ejecutarLiberacionReservas()">
+              ⚡ Forzar Liberación de Reservas Expiradas
+            </button>
+          </div>
+        </div>
+        <div id="resultadoOperacion" style="font-size: 0.85rem; padding: 8px 12px; border-radius: 6px; display: none;"></div>
+      </div>
+
+      <!-- Auditoría de Cajas Registradoras -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Auditoría de Cajas y Sesiones</h2>
+          <button class="action-btn" onclick="cargarCajas()">⟳ Refrescar Cajas</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>N° Caja</th>
+                <th>Estado</th>
+                <th>Saldo Inicial</th>
+                <th>Total Ventas</th>
+                <th>Saldo Final</th>
+                <th>Diferencia</th>
+                <th>Apertura</th>
+                <th>Cierre</th>
+              </tr>
+            </thead>
+            <tbody id="cajasTableBody">
+              <tr><td colspan="8" style="text-align:center;">Cargando sesiones de caja...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Resumen de Productos con Alerta -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Productos con Stock Crítico (Reserva o Agotamiento)</h2>
+          <button class="action-btn" onclick="cargarProductosCriticos()">⟳ Refrescar</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Nombre</th>
+                <th>Stock Físico</th>
+                <th>Stock Reservado</th>
+                <th>Stock Disponible</th>
+                <th>Precio Unit.</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="productosCriticosBody">
+              <tr><td colspan="7" style="text-align:center;">Cargando inventario crítico...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    async function cerrarSesionEmpleado() {
+      try {
+        await fetch('/api/v1/auth/logout', { method: 'POST' });
+      } catch (_) {}
+      localStorage.removeItem('viva_token');
+      localStorage.removeItem('viva_usuario');
+      window.location.href = '/sistema/login';
+    }
+
+    async function ejecutarLiberacionReservas() {
+      const btn = document.getElementById('btnLiberarReservas');
+      const box = document.getElementById('resultadoOperacion');
+      btn.disabled = true;
+      btn.textContent = 'Ejecutando fn_liberar_reservas_expiradas()...';
+      box.style.display = 'none';
+
+      try {
+        const res = await fetch('/pedidos/liberar-expiradas', { method: 'POST' });
+        const data = await res.json();
+        box.style.display = 'block';
+        if (res.ok) {
+          box.style.background = '#dcfce7';
+          box.style.color = '#15803d';
+          box.textContent = `✔ ${data.mensaje} (Reservas expiradas canceladas: ${data.reservas_liberadas})`;
+          cargarProductosCriticos();
+        } else {
+          box.style.background = '#fee2e2';
+          box.style.color = '#b91c1c';
+          box.textContent = `Error: ${data.detail || 'No se pudo ejecutar la liberación'}`;
+        }
+      } catch (err) {
+        box.style.display = 'block';
+        box.style.background = '#fee2e2';
+        box.style.color = '#b91c1c';
+        box.textContent = `Error de red: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '⚡ Forzar Liberación de Reservas Expiradas';
+      }
+    }
+
+    async function cargarCajas() {
+      const tbody = document.getElementById('cajasTableBody');
+      try {
+        const res = await fetch('/cajas/');
+        if (!res.ok) throw new Error('Error al cargar cajas');
+        const cajas = await res.json();
+        
+        let abiertas = 0;
+        if (!cajas.length) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No hay cajas registradas</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = cajas.map(c => {
+          if (c.estado === 'abierta') abiertas++;
+          const saldoInic = Number(c.saldo_inicial || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+          const ventas = Number(c.total_ventas || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+          const saldoFin = c.saldo_final ? Number(c.saldo_final).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }) : '—';
+          const diff = c.diferencia ? Number(c.diferencia).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }) : '—';
+          const apertura = c.fecha_apertura ? new Date(c.fecha_apertura).toLocaleString('es-CO') : '—';
+          const cierre = c.fecha_cierre ? new Date(c.fecha_cierre).toLocaleString('es-CO') : '—';
+
+          return `
+            <tr>
+              <td><strong>Caja #${c.numero_caja}</strong></td>
+              <td><span class="status-badge status-badge--${c.estado}">${c.estado.toUpperCase()}</span></td>
+              <td>${saldoInic}</td>
+              <td>${ventas}</td>
+              <td>${saldoFin}</td>
+              <td>${diff}</td>
+              <td>${apertura}</td>
+              <td>${cierre}</td>
+            </tr>
+          `;
+        }).join('');
+
+        document.getElementById('kpiCajas').textContent = cajas.length;
+        document.getElementById('kpiCajasSub').textContent = `${abiertas} abierta(s) actualmente`;
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" style="color:red; text-align:center;">${err.message}</td></tr>`;
+      }
+    }
+
+    async function cargarProductosCriticos() {
+      const tbody = document.getElementById('productosCriticosBody');
+      try {
+        const res = await fetch('/productos/');
+        if (!res.ok) throw new Error('Error al consultar productos');
+        const productos = await res.json();
+
+        document.getElementById('kpiProductos').textContent = productos.length;
+
+        const criticos = productos.filter(p => {
+          const disponible = (p.stock_fisico || 0) - (p.stock_reservado || 0);
+          return disponible <= 5;
+        });
+
+        document.getElementById('kpiBajoStock').textContent = criticos.length;
+
+        if (!criticos.length) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#10b981;">✔ Todos los productos cuentan con inventario suficiente</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = criticos.map(p => {
+          const disponible = (p.stock_fisico || 0) - (p.stock_reservado || 0);
+          const precio = Number(p.precio || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+          const estadoBadge = disponible <= 0
+            ? '<span class="status-badge status-badge--cerrada">QUIEBRE DE STOCK</span>'
+            : '<span class="status-badge status-badge--pendiente">STOCK CRÍTICO</span>';
+
+          return `
+            <tr>
+              <td><code>${p.codigo_barras || p.id.slice(0, 8)}</code></td>
+              <td><strong>${p.nombre}</strong></td>
+              <td>${p.stock_fisico}</td>
+              <td style="color:#d97706; font-weight:600;">${p.stock_reservado}</td>
+              <td style="font-weight:700;">${disponible}</td>
+              <td>${precio}</td>
+              <td>${estadoBadge}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="color:red; text-align:center;">${err.message}</td></tr>`;
+      }
+    }
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const usr = JSON.parse(localStorage.getItem('viva_usuario') || '{}');
+        if (usr.nombre_usuario) {
+          document.getElementById('adminUsername').textContent = usr.nombre || usr.nombre_usuario;
+        }
+      } catch (_) {}
+
+      cargarCajas();
+      cargarProductosCriticos();
+    });
+  </script>
+</body>
+</html>

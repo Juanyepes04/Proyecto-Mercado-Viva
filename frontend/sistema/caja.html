@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Mercado VIVA · Terminal POS</title>
-<link rel="stylesheet" href="css/cajero.css?v=3.0" />
+<link rel="stylesheet" href="/css/cajero.css?v=3.0" />
 <style>
   /* =========================================================
      Asegurar que la pantalla completa sea visible sin cortes
@@ -19,7 +19,7 @@
     min-height: 100dvh;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: auto; /* Permite scroll en pantallas bajas para que NUNCA se corte nada */
     display: flex;
     flex-direction: column;
     background: #09090b;
@@ -261,6 +261,7 @@
   <time class="pos-header__clock" id="reloj">--:--</time>
 
   <button class="btn btn--ghost" id="btnCerrarCaja" type="button">Cerrar caja</button>
+  <button class="btn btn--outline btn--sm" style="margin-left: 8px;" type="button" onclick="cerrarSesionEmpleado()">Salir</button>
 </header>
 
 <div class="cierre-caja-bar" id="cierreCajaBar" hidden>
@@ -272,7 +273,7 @@
 
 <main class="pos-layout">
 
-  <!-- ============ PANEL IZQUIERDO (65-70%): escaneo, cantidad, carrito ============ -->
+  <!-- ============ PANEL IZQUIERDO: escaneo, cantidad, carrito ============ -->
   <section class="pos-panel pos-panel--principal" aria-label="Captura de venta">
 
     <div class="scan-bar">
@@ -338,7 +339,7 @@
 
   </section>
 
-  <!-- ============ PANEL DERECHO (30-35%): resumen, pago, devoluciones ============ -->
+  <!-- ============ PANEL DERECHO: resumen, pago, devoluciones ============ -->
   <aside class="pos-panel pos-panel--resumen" aria-label="Resumen de cobro">
 
     <div class="resumen-card">
@@ -395,7 +396,17 @@
 
 </main>
 
-<script src="js/api.js"></script>
-<script src="js/cajero.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/cajero.js"></script>
+<script>
+  async function cerrarSesionEmpleado() {
+    try {
+      await fetch('/api/v1/auth/logout', { method: 'POST' });
+    } catch (_) {}
+    localStorage.removeItem('viva_token');
+    localStorage.removeItem('viva_usuario');
+    window.location.href = '/sistema/login';
+  }
+</script>
 </body>
 </html>

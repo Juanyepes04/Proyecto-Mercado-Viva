@@ -1,12 +1,10 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models.categoria import Categoria
-from ..models.producto import Producto
-from ..schemas.producto import ProductoCrear, ProductoActualizar
+from ..schemas.producto import ProductoCrear, ProductoActualizar, ProductoRespuesta
 from ..services.productos import (
     listar_productos,
     buscar_producto,
@@ -15,36 +13,24 @@ from ..services.productos import (
 )
 
 
+from ..core.deps import require_roles
+
 router = APIRouter(
     prefix="/productos",
     tags=["Productos"]
 )
 
 
-@router.get("/")
-def obtener_productos(db: Session = Depends(get_db)):
-    productos = db.query(Producto, Categoria.nombre).outerjoin(
-        Categoria, Producto.categoria_id == Categoria.id
-    ).filter(Producto.activo == True).all()
-
-    return [
-        {
-            "id": producto.id,
-            "identificador": producto.identificador,
-            "nombre": producto.nombre,
-            "categoria_id": producto.categoria_id,
-            "categoria_nombre": categoria_nombre,
-            "valor": producto.valor,
-            "foto_url": producto.foto_url,
-            "stock_actual": producto.stock_actual,
-            "stock_reservado": producto.stock_reservado,
-            "stock_disponible": producto.stock_disponible,
-        }
-        for producto, categoria_nombre in productos
-    ]
+@router.get("/", response_model=list[ProductoRespuesta])
+def obtener_productos(
+    categoria_id: UUID | None = None,
+    q: str | None = None,
+    db: Session = Depends(get_db)
+):
+    return listar_productos(db, categoria_id=categoria_id, q=q)
 
 
-@router.get("/{producto_id}")
+@router.get("/{producto_id}", response_model=ProductoRespuesta)
 def obtener_producto(
     producto_id: UUID,
     db: Session = Depends(get_db)
@@ -53,33 +39,36 @@ def obtener_producto(
 
     if not producto:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Producto no encontrado"
         )
 
     return producto
 
 
-@router.post("/")
+@router.post("/", response_model=ProductoRespuesta, status_code=status.HTTP_201_CREATED)
 def agregar_producto(
     datos: ProductoCrear,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _usuario_abastecedor = Depends(require_roles("abastecedor", "admin"))
 ):
     return crear_producto(datos, db)
 
 
-@router.put("/{producto_id}")
+@router.put("/{producto_id}", response_model=ProductoRespuesta)
 def editar_producto(
     producto_id: UUID,
     datos: ProductoActualizar,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _usuario_abastecedor = Depends(require_roles("abastecedor", "admin"))
 ):
     producto = actualizar_producto(producto_id, datos, db)
 
     if not producto:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Producto no encontrado"
         )
 
     return producto
+

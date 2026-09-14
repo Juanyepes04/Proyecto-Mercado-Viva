@@ -119,10 +119,29 @@
     el.inputEscaneo.focus();
   }
 
+  function authHeaders() {
+    const token = localStorage.getItem("viva_token");
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+  }
+
   function cargarSesion() {
     try {
       const guardada = JSON.parse(sessionStorage.getItem(CLAVE_SESION) || "null");
-      estado.sesion = guardada || SESION_DEMO;
+      const usuarioLogin = JSON.parse(localStorage.getItem("viva_usuario") || "null");
+
+      if (usuarioLogin && (usuarioLogin.rol === "cajero" || usuarioLogin.rol === "admin")) {
+        estado.sesion = {
+          cajero_id: usuarioLogin.id,
+          cajero_nombre: usuarioLogin.nombre || usuarioLogin.nombre_usuario,
+          caja_id: guardada ? guardada.caja_id : null,
+          caja_numero: guardada ? guardada.caja_numero : "1",
+        };
+      } else {
+        estado.sesion = guardada || SESION_DEMO;
+      }
     } catch (err) {
       estado.sesion = SESION_DEMO;
     }
@@ -135,6 +154,7 @@
       );
     }
   }
+
 
   function renderCajero() {
     el.cajaNumero.textContent = estado.sesion.caja_numero || "—";
@@ -585,9 +605,10 @@
     try {
       const respuesta = await fetch(`${API_BASE}/cajas/${estado.sesion.caja_id}/cerrar`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ saldo_final_real: saldoFinalReal }),
       });
+
 
       if (!respuesta.ok) {
         const detalle = await respuesta.json().catch(() => ({}));

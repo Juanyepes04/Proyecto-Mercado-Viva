@@ -54,18 +54,23 @@
   box-sizing: border-box;
 }
 
-html, body {
+html {
   height: 100%;
   margin: 0;
-  overflow: hidden; /* POS de kiosco: sin scroll de página, cada zona hace su propio scroll */
 }
 
 body {
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden; /* POS de kiosco: sin scroll general de ventana */
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-sans);
   color: var(--color-text);
   background: var(--color-bg);
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 13.5px;
+  line-height: 1.35;
 }
 
 button {
@@ -102,13 +107,15 @@ kbd {
    HEADER
    --------------------------------------------------------- */
 .pos-header {
+  flex: 0 0 auto;
   height: var(--header-h);
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   padding: 0 16px;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg-panel);
+  z-index: 10;
 }
 
 .pos-header__brand {
@@ -195,13 +202,15 @@ kbd {
    BARRA DE CIERRE DE CAJA (panel anclado, no flotante)
    --------------------------------------------------------- */
 .cierre-caja-bar {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 6px 16px;
   background: var(--color-warn-bg);
   border-bottom: 1px solid var(--color-border);
-  font-size: 13px;
+  font-size: 12.5px;
+  z-index: 9;
 }
 
 .cierre-caja-bar label {
@@ -210,11 +219,11 @@ kbd {
 }
 
 .cierre-caja-bar input {
-  height: var(--control-h);
-  width: 160px;
+  height: 30px;
+  width: 140px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
-  padding: 0 10px;
+  padding: 0 8px;
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   background: var(--color-bg);
@@ -222,11 +231,14 @@ kbd {
 }
 
 /* ---------------------------------------------------------
-   LAYOUT: split-pane estricto
+   LAYOUT: split-pane estricto y adaptable a pantalla completa
    --------------------------------------------------------- */
 .pos-layout {
+  flex: 1 1 0;
+  min-height: 0;
   display: flex;
-  height: calc(100vh - var(--header-h));
+  height: auto;
+  overflow: hidden;
 }
 
 .pos-panel {
@@ -237,18 +249,22 @@ kbd {
 }
 
 .pos-panel--principal {
-  flex: 0 0 68%;
+  flex: 0 0 66%;
+  max-width: 66%;
   border-right: 1px solid var(--color-border);
-  padding: 14px 16px 16px;
-  gap: 12px;
+  padding: 10px 14px 12px;
+  gap: 8px;
+  overflow: hidden;
 }
 
 .pos-panel--resumen {
-  flex: 0 0 32%;
-  padding: 16px;
-  gap: 16px;
+  flex: 0 0 34%;
+  max-width: 34%;
+  padding: 12px 14px;
+  gap: 10px;
   background: var(--color-bg-subtle);
   overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 /* ---------------------------------------------------------
@@ -355,12 +371,13 @@ kbd {
    TABLA DE ARTÍCULOS ESCANEADOS
    --------------------------------------------------------- */
 .cart-table-wrap {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 1 1 0;
+  min-height: 60px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow-y: auto;
   position: relative;
+  scrollbar-width: thin;
 }
 
 .cart-table {
@@ -487,15 +504,15 @@ kbd {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 10px 12px;
+  gap: 12px;
+  padding: 6px 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg-panel);
 }
 
 .numpad__display {
-  flex: 0 0 96px;
+  flex: 0 0 84px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -509,24 +526,24 @@ kbd {
 .numpad__valor {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
 }
 
 .numpad__grid {
   flex: 0 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 40px);
-  gap: 6px;
+  grid-template-columns: repeat(3, 36px);
+  gap: 4px;
 }
 
 .numpad__key {
-  height: 34px;
+  height: 28px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
   background: var(--color-bg-panel);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -540,6 +557,8 @@ kbd {
 
 .numpad__aplicar {
   margin-left: auto;
+  height: 32px;
+  font-size: 12px;
 }
 
 /* ---------------------------------------------------------
@@ -608,34 +627,34 @@ kbd {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg-panel);
-  padding: 12px;
+  padding: 8px 12px;
 }
 
 .panel-titulo {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--color-text-muted);
-  margin: 0 0 10px;
+  margin: 0 0 6px;
 }
 
 .resumen-card {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg-panel);
-  padding: 14px;
+  padding: 10px 12px;
 }
 
 .resumen-lista {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .resumen-fila {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--color-text-muted);
 }
 
@@ -654,8 +673,8 @@ kbd {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-top: 12px;
-  padding-top: 12px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px solid var(--color-border);
   font-weight: 600;
 }
@@ -663,7 +682,7 @@ kbd {
 .resumen-total span:last-child {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
 }
 
@@ -677,12 +696,12 @@ kbd {
 }
 
 .metodo-btn {
-  height: 44px;
+  height: 34px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
   background: var(--color-bg-panel);
   color: var(--color-text);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -741,15 +760,21 @@ kbd {
    --------------------------------------------------------- */
 .pos-panel__footer {
   margin-top: auto;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  position: sticky;
+  bottom: 0;
+  background: var(--color-bg-subtle);
+  padding-top: 4px;
+  z-index: 2;
 }
 
 .mensaje-estado {
   margin: 0;
   font-size: 12px;
-  padding: 8px 10px;
+  padding: 6px 10px;
   border-radius: var(--radius-sm);
   background: var(--color-bg-subtle);
   color: var(--color-text-muted);
@@ -771,18 +796,19 @@ kbd {
 }
 
 .btn--cobrar {
-  height: 52px;
+  height: 46px;
   width: 100%;
   background: var(--color-accent);
   border: 1px solid var(--color-accent);
   color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
 }
 
 .btn--cobrar:hover:not(:disabled) {
@@ -820,9 +846,51 @@ kbd {
 }
 
 /* ---------------------------------------------------------
-   RESPONSIVE — la operación real es en kiosco de escritorio;
-   este fallback solo evita romper la vista en pantallas angostas.
+   RESPONSIVE Y ADAPTABILIDAD DE ALTURA
    --------------------------------------------------------- */
+@media (max-height: 720px) {
+  :root {
+    --header-h: 46px;
+  }
+  .scan-bar {
+    height: 40px;
+  }
+  .scan-bar__input {
+    font-size: 14px;
+  }
+  .numpad {
+    padding: 4px 8px;
+    gap: 8px;
+  }
+  .numpad__grid {
+    grid-template-columns: repeat(3, 32px);
+    gap: 3px;
+  }
+  .numpad__key {
+    height: 25px;
+    font-size: 12px;
+  }
+  .numpad__valor {
+    font-size: 17px;
+  }
+  .resumen-card {
+    padding: 6px 10px;
+  }
+  .resumen-total span:last-child {
+    font-size: 20px;
+  }
+  .panel-bloque {
+    padding: 6px 8px;
+  }
+  .metodo-btn {
+    height: 30px;
+  }
+  .btn--cobrar {
+    height: 40px;
+    font-size: 13.5px;
+  }
+}
+
 @media (max-width: 860px) {
   html, body {
     overflow: auto;
@@ -836,11 +904,13 @@ kbd {
   .pos-panel--principal,
   .pos-panel--resumen {
     flex: 1 1 auto;
+    max-width: 100%;
     border-right: none;
     border-bottom: 1px solid var(--color-border);
   }
 
   .cart-table-wrap {
-    max-height: 320px;
+    min-height: 180px;
+    max-height: 280px;
   }
 }

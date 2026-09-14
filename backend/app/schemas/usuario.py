@@ -23,6 +23,21 @@ class UsuarioRespuesta(BaseModel):
     nombre_usuario: str
     correo: EmailStr
     rol: str
-    direccion: str
+    direccion: str | None = None
     saldo_simulado: float
     activo: bool
+
+
+class UsuarioRecarga(BaseModel):
+    monto: float
+
+
+class UsuarioActualizarDireccion(BaseModel):
+    direccion: str
+
+
+class TokenRespuesta(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    usuario: UsuarioRespuesta
+

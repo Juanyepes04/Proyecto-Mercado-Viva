@@ -1,5 +1,6 @@
 from datetime import datetime, timezone, timedelta
 
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from ..models.producto import Producto
@@ -45,3 +46,13 @@ def crear_reserva(
     db.flush()
 
     return reserva
+
+
+def liberar_reservas_expiradas(db: Session) -> int:
+    try:
+        resultado = db.execute(text("SELECT fn_liberar_reservas_expiradas();")).scalar()
+        db.commit()
+        return int(resultado or 0)
+    except Exception:
+        db.rollback()
+        raise

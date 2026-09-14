@@ -35,28 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoading(true);
 
     try {
-      const usuario = await vivaApiRequest("/usuarios/login", {
+      const data = await vivaApiRequest("/usuarios/login", {
         method: "POST",
         body: JSON.stringify({ nombre_usuario, contrasena }),
       });
 
-      // Nota: /usuarios/login hoy responde 200 con {"mensaje": "..."}
-      // cuando las credenciales son incorrectas (no un 401/HTTPException),
-      // así que validamos la forma de la respuesta en vez de solo el status.
-      if (!usuario || !usuario.rol) {
-        showError(
-          (usuario && usuario.mensaje) || "Usuario o contraseña incorrectos."
-        );
+      if (!data || !data.access_token || !data.usuario) {
+        showError("No se recibieron credenciales válidas.");
         return;
       }
 
-      localStorage.setItem("viva_usuario", JSON.stringify(usuario));
-      redirigirPorRol(usuario.rol);
+      localStorage.setItem("viva_token", data.access_token);
+      localStorage.setItem("viva_usuario", JSON.stringify(data.usuario));
+      redirigirPorRol(data.usuario.rol);
     } catch (error) {
       showError(error.message || "No se pudo iniciar sesión. Intenta de nuevo.");
     } finally {
       setLoading(false);
     }
+
   });
 
   function redirigirPorRol(rol) {

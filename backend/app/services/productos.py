@@ -1,10 +1,30 @@
+from uuid import UUID
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 from ..models.producto import Producto
 
 
-def listar_productos(db: Session):
-    return db.query(Producto).filter(Producto.activo == True).all()
+def listar_productos(
+    db: Session,
+    categoria_id: UUID | None = None,
+    q: str | None = None
+):
+    query = db.query(Producto).filter(Producto.activo == True)
+
+    if categoria_id:
+        query = query.filter(Producto.categoria_id == categoria_id)
+
+    if q and q.strip():
+        termino = f"%{q.strip()}%"
+        query = query.filter(
+            or_(
+                Producto.nombre.ilike(termino),
+                Producto.identificador.ilike(termino)
+            )
+        )
+
+    return query.order_by(Producto.nombre.asc()).all()
 
 
 def buscar_producto(producto_id, db: Session):

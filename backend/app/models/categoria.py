@@ -11,8 +11,9 @@ class Categoria(Base):
     __tablename__ = "categorias"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    nombre = Column(String)
-    foto_url = Column(String)
+    nombre = Column(String, nullable=False, unique=True)
+    foto_url = Column(String, nullable=True)
+
     created_at = Column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc)
