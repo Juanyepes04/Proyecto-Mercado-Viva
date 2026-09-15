@@ -376,5 +376,6 @@ El siguiente paso del proyecto es integrar el frontend con la API para permitir 
 Equipo:
 
 * Juan Diego Yepes
-* Jhon Lizarazo
-* Jhon Garavito
+* Samuel David Gutierrez Mejia
+* Luis Alejandro Correa Arrieta
+* Santiago Ossa Orozco
