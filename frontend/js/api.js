@@ -6,11 +6,13 @@
 
 // Ajusta esta URL al host/puerto donde corre el backend FastAPI.
 const VIVA_API_BASE_URL =
-  typeof window !== "undefined" &&
-  window.location.origin &&
-  (window.location.port === "8000" || window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-    ? (window.location.port === "8000" ? window.location.origin : "http://localhost:8000")
-    : "http://localhost:8000";
+  (window.location.port === "8000" ||
+   window.location.hostname === "localhost" ||
+   window.location.hostname === "127.0.0.1")
+    ? (window.location.port === "8000"
+        ? window.location.origin
+        : "http://localhost:8000")
+    : window.location.origin;
 
 /**
  * Llama a la API de Mercado VIVA y devuelve el JSON de la respuesta.

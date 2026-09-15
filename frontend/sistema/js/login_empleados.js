@@ -41,10 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const apiBase =
-        window.location.origin && window.location.port === "8000"
-          ? ""
-          : "http://localhost:8000";
-
+  window.location.port === "8000"
+    ? ""
+    : window.location.origin;
+            
       const response = await fetch(`${apiBase}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -21,7 +21,15 @@
   // ------------------------------------------------------
   // Config
   // ------------------------------------------------------
-  const API_BASE_URL = window.MERCADO_VIVA_API_URL || "http://localhost:8000";
+  const API_BASE_URL =
+  window.MERCADO_VIVA_API_URL ||
+  ((window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1")
+    ? "http://localhost:8000"
+    : window.location.origin);
+
+
+
 
   function authHeaders() {
     const token = localStorage.getItem("viva_token");
