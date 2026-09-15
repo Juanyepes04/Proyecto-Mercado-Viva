@@ -6,7 +6,12 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..schemas.pedido import PedidoCrear, PedidoRespuesta
 from ..services.ventas import confirmar_pedido
-from ..services.pedidos import crear_pedido, listar_pedidos, buscar_pedido
+from ..services.pedidos import (
+    crear_pedido,
+    listar_pedidos,
+    buscar_pedido,
+    cancelar_pedido,
+)
 
 
 router = APIRouter(
@@ -38,6 +43,20 @@ def confirmar_venta(
     try:
         return confirmar_pedido(pedido_id, db)
 
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
+
+
+@router.post("/{pedido_id}/cancelar", response_model=PedidoRespuesta)
+def cancelar_venta(
+    pedido_id: UUID,
+    db: Session = Depends(get_db)
+):
+    try:
+        return cancelar_pedido(pedido_id, db)
     except ValueError as e:
         raise HTTPException(
             status_code=400,
@@ -79,4 +98,4 @@ def ejecutar_liberacion_expiradas(db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=500,
             detail=f"Error al liberar reservas: {e}"
-        )
+        )

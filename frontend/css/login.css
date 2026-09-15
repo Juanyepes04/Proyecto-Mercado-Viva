@@ -26,7 +26,7 @@
 
 .login-panel__inner {
   width: 100%;
-  max-width: 360px;
+  max-width: 420px;
 }
 
 .brand {
@@ -93,6 +93,7 @@
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"] {
   height: 36px;
   width: 100%;
@@ -193,6 +194,105 @@ input:focus {
   font-size: 0.8125rem;
   color: var(--zinc-500);
   text-align: center;
+}
+
+/* ---------- Tabs y selector de modo (Login / Registro) ---------- */
+
+.auth-tabs {
+  display: flex;
+  background: var(--zinc-100);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  gap: 4px;
+  border: 1px solid var(--zinc-200);
+}
+
+.auth-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--zinc-500);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.auth-tab:hover {
+  color: var(--zinc-900);
+}
+
+.auth-tab--active {
+  background: #ffffff;
+  color: var(--zinc-950);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.auth-tab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--zinc-950);
+}
+
+/* Grid de campos para formularios más densos */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Banner de bienvenida y beneficio de cliente */
+.registro-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--emerald-50);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  color: var(--emerald-900);
+  line-height: 1.4;
+}
+
+.registro-perk svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--emerald-600);
+}
+
+.registro-perk strong {
+  color: var(--emerald-950);
+}
+
+/* Botón con apariencia de enlace de texto */
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--emerald-700);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
 }
 
 /* ---------- Panel derecho: identidad de marca ---------- */

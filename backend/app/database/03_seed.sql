@@ -62,3 +62,5 @@ insert into productos (identificador, nombre, categoria_id, valor, foto_url, sto
 -- sin tener que llamar fn_abrir_caja primero)
 -- ---------------------------------------------------------
 select fn_abrir_caja('33333333-0000-0000-0000-000000000001', 50000);
+select fn_abrir_caja('33333333-0000-0000-0000-000000000002', 50000);
+select fn_abrir_caja('33333333-0000-0000-0000-000000000003', 50000);

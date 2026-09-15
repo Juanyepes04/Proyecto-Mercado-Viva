@@ -645,8 +645,20 @@
     }
   }
 
-  function expirarReserva() {
+  async function liberarPedidoBackend() {
+    if (!pedidoActual) return;
+    try {
+      await vivaApiRequest(`/pedidos/${pedidoActual.id}/cancelar`, {
+        method: "POST",
+      });
+    } catch (error) {
+      mostrarToast("No se pudo liberar la reserva: " + error.message, "error");
+    }
     pedidoActual = null;
+  }
+
+  async function expirarReserva() {
+    await liberarPedidoBackend();
     carrito = {};
     actualizarCarritoUI();
     cambiarVista("catalogo");
@@ -654,9 +666,9 @@
     cargarDatos(); // Recargar stock actualizado
   }
 
-  function cancelarPago() {
+  async function cancelarPago() {
     detenerTemporizadorReserva();
-    pedidoActual = null;
+    await liberarPedidoBackend();
     cambiarVista("catalogo");
     abrirCarrito();
   }
