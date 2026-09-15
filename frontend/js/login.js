@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sincronizar hash de URL sin recargar
     try {
       history.replaceState(null, "", esRegistro ? "#registro" : "#login");
-    } catch (_) {}
+    } catch (_) { }
 
     // Foco inicial accesible
     if (esRegistro) {
