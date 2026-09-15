@@ -84,6 +84,10 @@ sistema_css_dir = os.path.join(FRONTEND_SISTEMA_DIR, "css")
 if os.path.isdir(sistema_css_dir):
     app.mount("/sistema/css", StaticFiles(directory=sistema_css_dir), name="sistema_css")
 
+img_dir = os.path.join(FRONTEND_DIR, "img")
+if os.path.isdir(img_dir):
+    app.mount("/img", StaticFiles(directory=img_dir), name="img")
+
 
 # Inclusión de Routers de API y Vistas
 app.include_router(auth_router)
@@ -100,6 +104,32 @@ app.include_router(cajas_router)
 def canal_publico_storefront():
     index_path = os.path.join(FRONTEND_DIR, "index.html")
     return FileResponse(index_path)
+
+
+@app.get("/login", response_class=FileResponse)
+def canal_publico_login():
+    return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
+
+
+@app.get("/login.html", response_class=FileResponse)
+def canal_publico_login_html():
+    return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
+
+
+@app.get("/cliente", response_class=FileResponse)
+@app.get("/cliente.html", response_class=FileResponse)
+def canal_publico_cliente_html():
+    return FileResponse(os.path.join(FRONTEND_DIR, "cliente.html"))
+
+
+@app.get("/cajero.html", response_class=FileResponse)
+def canal_publico_cajero_html():
+    return FileResponse(os.path.join(FRONTEND_DIR, "cajero.html"))
+
+
+@app.get("/inventario.html", response_class=FileResponse)
+def canal_publico_inventario_html():
+    return FileResponse(os.path.join(FRONTEND_DIR, "inventario.html"))
 
 
 @app.get("/api/health")

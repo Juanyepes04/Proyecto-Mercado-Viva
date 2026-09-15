@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar sesión · Mercado VIVA</title>
+  <title>Iniciar sesión y Registro · Mercado VIVA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -18,85 +18,265 @@
     <!-- Panel izquierdo: formulario -->
     <section class="login-panel">
       <div class="login-panel__inner">
-        <div class="brand">
+        <a href="/" class="brand" style="text-decoration: none;" title="Volver a la tienda de Mercado VIVA">
           <span class="brand__mark" aria-hidden="true"></span>
           <span class="brand__name">MERCADO <strong>VIVA</strong></span>
+        </a>
+
+        <!-- Selector de Acceso / Registro -->
+        <div class="auth-tabs" role="tablist" aria-label="Tipo de acceso">
+          <button
+            type="button"
+            class="auth-tab auth-tab--active"
+            id="tab-login"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-login"
+          >
+            Iniciar sesión
+          </button>
+          <button
+            type="button"
+            class="auth-tab"
+            id="tab-registro"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-registro"
+          >
+            Crear cuenta
+          </button>
         </div>
 
-        <h1 class="login-title">Bienvenido de nuevo</h1>
-        <p class="login-subtitle">
-          Ingresa tu usuario y contraseña para continuar.
-        </p>
+        <!-- ================= PANEL 1: INICIAR SESIÓN ================= -->
+        <div id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+          <h1 class="login-title">Bienvenido de nuevo</h1>
+          <p class="login-subtitle">
+            Ingresa tu usuario y contraseña para continuar.
+          </p>
 
-        <form id="form-login" class="login-form" novalidate>
-          <div class="field">
-            <label for="nombre_usuario"
-              >Nombre de usuario<span class="required">*</span></label
-            >
-            <input
-              type="text"
-              id="nombre_usuario"
-              name="nombre_usuario"
-              placeholder="tu.usuario"
-              autocomplete="username"
-              required
-            />
-          </div>
-
-          <div class="field">
-            <label for="contrasena"
-              >Contraseña<span class="required">*</span></label
-            >
-            <div class="input-with-action">
+          <form id="form-login" class="login-form" novalidate>
+            <div class="field">
+              <label for="nombre_usuario"
+                >Nombre de usuario o cédula<span class="required">*</span></label
+              >
               <input
-                type="password"
-                id="contrasena"
-                name="contrasena"
-                placeholder="••••••••"
-                autocomplete="current-password"
+                type="text"
+                id="nombre_usuario"
+                name="nombre_usuario"
+                placeholder="tu.usuario"
+                autocomplete="username"
                 required
               />
-              <button
-                type="button"
-                class="input-action"
-                id="toggle-password"
-                aria-label="Mostrar contraseña"
+            </div>
+
+            <div class="field">
+              <label for="contrasena"
+                >Contraseña<span class="required">*</span></label
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
+              <div class="input-with-action">
+                <input
+                  type="password"
+                  id="contrasena"
+                  name="contrasena"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  required
+                />
+                <button
+                  type="button"
+                  class="input-action"
+                  id="toggle-password"
+                  aria-label="Mostrar contraseña"
                 >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-              </button>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="field-hint">* Campo obligatorio</div>
+
+            <div id="login-error" class="alert alert--error" role="alert" hidden></div>
+
+            <div class="login-form__row">
+              <a href="#" class="link-muted" id="link-olvido-pass">Olvidé mi contraseña</a>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--block" id="btn-submit">
+              <span class="btn__label">Iniciar sesión</span>
+            </button>
+          </form>
+
+          <p class="login-footer">
+            ¿Es tu primera vez en Mercado VIVA?
+            <button type="button" class="btn-link" id="btn-ir-registro">Crea tu cuenta aquí</button>
+          </p>
+        </div>
+
+        <!-- ================= PANEL 2: REGISTRO CLIENTE ================= -->
+        <div id="panel-registro" role="tabpanel" aria-labelledby="tab-registro" hidden>
+          <h1 class="login-title">Crea tu cuenta</h1>
+          <p class="login-subtitle">
+            Regístrate para comprar en línea con stock omnicanal sincronizado.
+          </p>
+
+          <div class="registro-perk">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+            <div>
+              <strong>$50.000 COP de saldo de bienvenida</strong> acreditados automáticamente en tu perfil para tus pedidos.
             </div>
           </div>
 
-          <div class="field-hint">* Campo obligatorio</div>
+          <form id="form-registro" class="login-form" novalidate style="margin-top: 14px;">
+            <div class="field-row">
+              <div class="field">
+                <label for="reg-nombre"
+                  >Nombre y apellido<span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="reg-nombre"
+                  name="nombre"
+                  placeholder="Ej. Ana Pérez"
+                  autocomplete="name"
+                  required
+                />
+              </div>
 
-          <div id="login-error" class="alert alert--error" role="alert" hidden></div>
+              <div class="field">
+                <label for="reg-identidad"
+                  >Documento / Cédula<span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="reg-identidad"
+                  name="numero_identidad"
+                  placeholder="Ej. 1020304050"
+                  required
+                />
+              </div>
+            </div>
 
-          <div class="login-form__row">
-            <a href="#" class="link-muted">Olvidé mi contraseña</a>
-          </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="reg-usuario"
+                  >Nombre de usuario<span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="reg-usuario"
+                  name="nombre_usuario"
+                  placeholder="ana.perez"
+                  autocomplete="username"
+                  required
+                />
+              </div>
 
-          <button type="submit" class="btn btn--primary btn--block" id="btn-submit">
-            <span class="btn__label">Iniciar sesión</span>
-          </button>
-        </form>
+              <div class="field">
+                <label for="reg-correo"
+                  >Correo electrónico<span class="required">*</span></label
+                >
+                <input
+                  type="email"
+                  id="reg-correo"
+                  name="correo"
+                  placeholder="ana@ejemplo.com"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+            </div>
 
-        <p class="login-footer">
-          ¿Es tu primera vez en Mercado VIVA?
-          <a href="#" class="link">Crea tu cuenta</a>
-        </p>
+            <div class="field">
+              <label for="reg-contrasena"
+                >Contraseña<span class="required">*</span></label
+              >
+              <div class="input-with-action">
+                <input
+                  type="password"
+                  id="reg-contrasena"
+                  name="contrasena"
+                  placeholder="Mínimo 4 caracteres"
+                  autocomplete="new-password"
+                  required
+                />
+                <button
+                  type="button"
+                  class="input-action"
+                  id="toggle-reg-password"
+                  aria-label="Mostrar contraseña"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="reg-direccion"
+                >Dirección de entrega <span style="font-weight: 400; color: var(--zinc-400);">(opcional)</span></label
+              >
+              <input
+                type="text"
+                id="reg-direccion"
+                name="direccion"
+                placeholder="Ej. Calle 10 # 40-20, Medellín"
+                autocomplete="street-address"
+              />
+            </div>
+
+            <div class="field-hint">* Campos obligatorios para el registro</div>
+
+            <div id="registro-error" class="alert alert--error" role="alert" hidden></div>
+            <div id="registro-success" class="alert alert--success" role="status" hidden></div>
+
+            <button type="submit" class="btn btn--primary btn--block" id="btn-reg-submit">
+              <span class="btn__label">Crear cuenta y comenzar</span>
+            </button>
+          </form>
+
+          <p class="login-footer">
+            ¿Ya tienes una cuenta registrada?
+            <button type="button" class="btn-link" id="btn-ir-login">Inicia sesión aquí</button>
+          </p>
+        </div>
       </div>
     </section>
 

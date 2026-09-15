@@ -4,12 +4,12 @@ from uuid import UUID
 
 class UsuarioRegistro(BaseModel):
     nombre: str
-    numero_identidad: str
+    numero_identidad: str = ""
     nombre_usuario: str
     contrasena: str
     correo: EmailStr
-    rol: str
-    direccion: str
+    rol: str = "cliente"
+    direccion: str | None = None
 
 class UsuarioLogin(BaseModel):
     nombre_usuario: str

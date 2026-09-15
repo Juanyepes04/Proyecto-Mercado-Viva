@@ -145,3 +145,9 @@ a {
   color: var(--rose-700);
   border-color: #fecdd3;
 }
+
+.alert--success {
+  background: var(--emerald-50);
+  color: var(--emerald-700);
+  border-color: #a7f3d0;
+}
