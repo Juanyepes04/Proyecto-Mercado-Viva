@@ -221,7 +221,9 @@ pip install -r requirements.txt
 
 El proyecto utiliza **Supabase/PostgreSQL**.
 
-Se debe configurar la cadena de conexión correspondiente en el archivo de configuración utilizado por el proyecto.
+En desarrollo, copia `.env.example` como `.env` y define `DATABASE_URL` con la URI de PostgreSQL que aparece en Supabase en **Connect > Connection string > URI**. La URI debe ser la de PostgreSQL, no la URL `https://...` del API de Supabase.
+
+En Render, crea la variable de entorno `DATABASE_URL` en **Environment** con esa misma URI. No subas `.env` al repositorio ni publiques la contraseña.
 
 No se deben subir al repositorio las credenciales reales de la base de datos.
 

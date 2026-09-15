@@ -10,11 +10,11 @@ Base = declarative_base()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
-    USER = os.getenv("user") or os.getenv("DB_USER")
-    PASSWORD = os.getenv("password") or os.getenv("DB_PASSWORD")
-    HOST = os.getenv("host") or os.getenv("DB_HOST")
-    PORT = os.getenv("port") or os.getenv("DB_PORT", "6543")
-    DBNAME = os.getenv("dbname") or os.getenv("DB_NAME", "postgres")
+    USER = os.getenv("DB_USER") or os.getenv("SUPABASE_DB_USER") or os.getenv("user")
+    PASSWORD = os.getenv("DB_PASSWORD") or os.getenv("SUPABASE_DB_PASSWORD") or os.getenv("password")
+    HOST = os.getenv("DB_HOST") or os.getenv("SUPABASE_DB_HOST") or os.getenv("host")
+    PORT = os.getenv("DB_PORT") or os.getenv("SUPABASE_DB_PORT") or os.getenv("port", "6543")
+    DBNAME = os.getenv("DB_NAME") or os.getenv("SUPABASE_DB_NAME") or os.getenv("dbname", "postgres")
 
     missing = [
         name for name, value in {
@@ -25,7 +25,8 @@ if not DATABASE_URL:
     ]
     if missing:
         raise RuntimeError(
-            "Faltan variables de Supabase en Render: " + ", ".join(missing)
+            "Configura DATABASE_URL en Render con la URI de Supabase "
+            "(o define DB_USER, DB_PASSWORD y DB_HOST): " + ", ".join(missing)
         )
 
     DATABASE_URL = (
