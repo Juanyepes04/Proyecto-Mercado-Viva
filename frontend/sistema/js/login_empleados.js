@@ -40,9 +40,15 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/v1/auth/login", {
+      const apiBase =
+        window.location.origin && window.location.port === "8000"
+          ? ""
+          : "http://localhost:8000";
+
+      const response = await fetch(`${apiBase}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ nombre_usuario, contrasena }),
       });
 
