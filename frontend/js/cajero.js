@@ -14,7 +14,14 @@
   // -------------------------------------------------------
   // Ajusta esta URL al desplegar el backend. Puede sobreescribirse
   // definiendo `window.MERCADO_VIVA_API_BASE` antes de cargar este script.
-  const API_BASE = window.MERCADO_VIVA_API_BASE || "http://localhost:8000";
+  const API_BASE = (() => {
+    const configurada = window.MERCADO_VIVA_API_BASE || window.MERCADO_VIVA_API_URL;
+    if (configurada) return configurada.replace(/\/$/, "");
+    const esLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    return esLocal && window.location.port !== "8000"
+      ? "http://localhost:8000"
+      : window.location.origin;
+  })();
 
   const CLAVE_OFFLINE = "vivapos_pendientes_offline";
   const CLAVE_SESION = "vivapos_sesion_cajero";

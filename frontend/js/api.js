@@ -4,15 +4,16 @@
 // cliente.js, cajero.js e inventario.js.
 // =========================================================
 
-// Ajusta esta URL al host/puerto donde corre el backend FastAPI.
-const VIVA_API_BASE_URL =
-  (window.location.port === "8000" ||
-   window.location.hostname === "localhost" ||
-   window.location.hostname === "127.0.0.1")
-    ? (window.location.port === "8000"
-        ? window.location.origin
-        : "http://localhost:8000")
-    : window.location.origin;
+// En Render el backend sirve también el frontend, por lo que la API vive en
+// el mismo origen. En desarrollo, el frontend usa el backend local:8000.
+const VIVA_API_BASE_URL = (() => {
+  const configurada = window.MERCADO_VIVA_API_URL || window.MERCADO_VIVA_API_BASE;
+  if (configurada) return configurada.replace(/\/$/, "");
+
+  const esLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  if (esLocal && window.location.port !== "8000") return "http://localhost:8000";
+  return window.location.origin;
+})();
 
 /**
  * Llama a la API de Mercado VIVA y devuelve el JSON de la respuesta.
