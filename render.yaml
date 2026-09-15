@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: proyecto-mercado-viva
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://proyecto-mercado-viva.onrender.com
