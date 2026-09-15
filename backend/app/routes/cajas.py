@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..schemas.caja import CajaAbrir, CajaCerrar, CajaRespuesta
-from ..services.cajas import abrir_caja, cerrar_caja
+from ..services.cajas import abrir_caja, cerrar_caja, obtener_caja_abierta
 
 
 from ..core.deps import require_roles
@@ -36,6 +36,20 @@ def abrir(
         )
 
 
+@router.get("/abierta/{cajero_id}", response_model=CajaRespuesta)
+def obtener_abierta(
+    cajero_id: UUID,
+    db: Session = Depends(get_db)
+):
+    caja = obtener_caja_abierta(cajero_id, db)
+    if not caja:
+        raise HTTPException(
+            status_code=404,
+            detail="El cajero no tiene una caja abierta"
+        )
+    return caja
+
+
 @router.post("/{caja_id}/cerrar", response_model=CajaRespuesta)
 def cerrar(
     caja_id: UUID,
@@ -53,4 +67,4 @@ def cerrar(
         raise HTTPException(
             status_code=400,
             detail=str(e)
-        )
+        )

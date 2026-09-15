@@ -93,3 +93,10 @@ def cerrar_caja(caja_id, saldo_final_real, db: Session):
     db.refresh(caja)
 
     return caja
+
+
+def obtener_caja_abierta(cajero_id, db: Session):
+    return db.query(Caja).filter(
+        Caja.cajero_id == cajero_id,
+        Caja.estado == "abierta"
+    ).first()
