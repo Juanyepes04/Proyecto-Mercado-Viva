@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..models.pedido import Pedido
 from ..models.detalle_pedido import DetallePedido
 from ..models.producto import Producto
+from ..models.reserva_stock import ReservaStock
 from ..schemas.pedido import PedidoCrear
 from .reservas_stock import crear_reserva
 
@@ -86,3 +87,43 @@ def buscar_pedido(pedido_id, db: Session):
     return db.query(Pedido).filter(
         Pedido.id == pedido_id
     ).first()
+
+
+def cancelar_pedido(pedido_id, db: Session):
+    pedido = db.query(Pedido).filter(Pedido.id == pedido_id).first()
+
+    if not pedido:
+        raise ValueError("Pedido no encontrado")
+
+    if pedido.estado != "pendiente":
+        raise ValueError("El pedido no está pendiente")
+
+    try:
+        detalles = db.query(DetallePedido).filter(
+            DetallePedido.pedido_id == pedido.id
+        ).all()
+
+        for detalle in detalles:
+            reserva = db.query(ReservaStock).filter(
+                ReservaStock.detalle_pedido_id == detalle.id,
+                ReservaStock.estado == "activa"
+            ).first()
+            if not reserva:
+                continue
+
+            producto = db.query(Producto).filter(
+                Producto.id == reserva.producto_id
+            ).first()
+            if producto:
+                producto.stock_reservado = max(
+                    0, producto.stock_reservado - reserva.cantidad
+                )
+            reserva.estado = "cancelada"
+
+        pedido.estado = "cancelado"
+        db.commit()
+        db.refresh(pedido)
+        return pedido
+    except Exception:
+        db.rollback()
+        raise

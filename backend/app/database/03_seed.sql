@@ -43,19 +43,18 @@ insert into usuarios (id, nombre, numero_identidad, nombre_usuario, contrasena_h
 -- ---------------------------------------------------------
 -- PRODUCTOS DE EJEMPLO
 -- ---------------------------------------------------------
-insert into productos (identificador, nombre, categoria_id, valor, stock_actual, stock_minimo) values
-    ('SKU-0001', 'Gaseosa 1.5L',        '11111111-0000-0000-0000-000000000001', 5500,  40, 10),
-    ('SKU-0002', 'Agua 600ml',          '11111111-0000-0000-0000-000000000001', 2000,  60, 15),
-    ('SKU-0003', 'Papas fritas 150g',   '11111111-0000-0000-0000-000000000002', 4500,  35, 10),
-    ('SKU-0004', 'Chocolatina',         '11111111-0000-0000-0000-000000000002', 2500,  80, 20),
-    ('SKU-0005', 'Detergente 1kg',      '11111111-0000-0000-0000-000000000003', 12000, 20, 5),
-    ('SKU-0006', 'Jabón de baño',       '11111111-0000-0000-0000-000000000003', 3200,  25, 5),
-    ('SKU-0007', 'Leche entera 1L',     '11111111-0000-0000-0000-000000000004', 4200,  30, 10),
-    ('SKU-0008', 'Yogurt 200ml',        '11111111-0000-0000-0000-000000000004', 2800,  40, 10),
-    ('SKU-0009', 'Pan tajado',          '11111111-0000-0000-0000-000000000005', 6500,  15, 5),
-    ('SKU-0010', '
-    
-    ',           '11111111-0000-0000-0000-000000000005', 3500,  0,  5);
+insert into productos (identificador, nombre, categoria_id, valor, foto_url, stock_actual, stock_minimo) values
+    ('SKU-0001', 'Gaseosa 1.5L',        '11111111-0000-0000-0000-000000000001', 5500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeXzHRVmsN9M3l_eTIZvZBAcLb8-FCKYaUo4htA4bzVQ&s=10', 40, 10),
+    ('SKU-0002', 'Agua 600ml',          '11111111-0000-0000-0000-000000000001', 2000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz-p50v7umI0rHOG-9A9IeMyAd03PNA1FYO4alP6arRw&s=10', 60, 15),
+    ('SKU-0003', 'Papas fritas 150g',   '11111111-0000-0000-0000-000000000002', 4500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6AMSP8mp-q2BOmXSecBLUGs_ppgm3WI4C3kZQPmJurg&s=10',  35, 10),
+    ('SKU-0004', 'Chocolatina',         '11111111-0000-0000-0000-000000000002', 2500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRifAFkt0v_zjPbVheJAVvYAj_ziEVP_dCQOH5zFYptAQ&s=10',  80, 20),
+    ('SKU-0005', 'Detergente 1kg',      '11111111-0000-0000-0000-000000000003', 12000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqAfgYk2fap3_VvmdK4cak9fqgLGHqsyUR5ybmY7tddA&s=10', 20, 5),
+    ('SKU-0006', 'Jabón de baño',       '11111111-0000-0000-0000-000000000003', 3200, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCptqJN0fVxZNJMUhgLBZjRbBWLcf_rAky94peftyfwA&s=10', 25, 5),
+    ('SKU-0007', 'Leche entera 1L',     '11111111-0000-0000-0000-000000000004', 4200,  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo8l2VWVpdkO7l_svtihBTauqRo1i5Rtfiu-Gz_WlD8Q&s=1030', 30, 10),
+    ('SKU-0008', 'Yogurt 200ml',        '11111111-0000-0000-0000-000000000004', 2800, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw6DRcnZerope38iGpOFKh6dX_LXUOiCG7qBcyoA926w&s=10', 40, 10),
+    ('SKU-0009', 'Pan tajado',          '11111111-0000-0000-0000-000000000005', 6500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYPdmlY7cdlyyDrlExTXP3cNO0DEJslAluo4hZbiOJkw&s=10', 15, 5),
+    ('SKU-0010', 'Croissant',           '11111111-0000-0000-0000-000000000005', 3500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM47genvrncEp8mKiNbuxhsmJY1vRESKwM2dw3edf-Qg&s=10', 0, 5),
+    ('SKU-0011', 'Jugo de naranja',     '11111111-0000-0000-0000-000000000001', 4500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1iljfhS0hi1bigdMi29sZqosFJEpSuzhO0_C4v2csBA&s=10', 50, 5);
     -- SKU-0010 queda a propósito en 0 para que puedas probar HU4 (alternativas)
 
 -- ---------------------------------------------------------
@@ -63,3 +62,5 @@ insert into productos (identificador, nombre, categoria_id, valor, stock_actual,
 -- sin tener que llamar fn_abrir_caja primero)
 -- ---------------------------------------------------------
 select fn_abrir_caja('33333333-0000-0000-0000-000000000001', 50000);
+select fn_abrir_caja('33333333-0000-0000-0000-000000000002', 50000);
+select fn_abrir_caja('33333333-0000-0000-0000-000000000003', 50000);

@@ -107,8 +107,8 @@
   // -------------------------------------------------------
   // INICIALIZACIÓN
   // -------------------------------------------------------
-  function init() {
-    cargarSesion();
+  async function init() {
+    await cargarSesion();
     renderCajero();
     iniciarReloj();
     actualizarEstadoConexion();
@@ -127,7 +127,7 @@
     };
   }
 
-  function cargarSesion() {
+  async function cargarSesion() {
     try {
       const guardada = JSON.parse(sessionStorage.getItem(CLAVE_SESION) || "null");
       const usuarioLogin = JSON.parse(localStorage.getItem("viva_usuario") || "null");
@@ -146,11 +146,26 @@
       estado.sesion = SESION_DEMO;
     }
 
+    if (!estado.sesion.caja_id && estado.sesion.cajero_id) {
+      try {
+        const respuesta = await fetch(
+          `${API_BASE}/cajas/abierta/${estado.sesion.cajero_id}`,
+          { headers: authHeaders() }
+        );
+        if (respuesta.ok) {
+          const caja = await respuesta.json();
+          estado.sesion.caja_id = caja.id;
+          estado.sesion.caja_numero = estado.sesion.caja_numero || "1";
+          sessionStorage.setItem(CLAVE_SESION, JSON.stringify(estado.sesion));
+        }
+      } catch (error) {
+        console.warn("No se pudo consultar la caja abierta:", error);
+      }
+    }
+
     if (!estado.sesion.caja_id) {
       console.info(
-        "[VIVA POS] No hay caja_id en la sesión: el backend aún no expone un " +
-        "endpoint para consultar la caja abierta de un cajero. Define " +
-        "sessionStorage['" + CLAVE_SESION + "'] desde login.js con { cajero_id, cajero_nombre, caja_id, caja_numero }."
+        "[VIVA POS] El cajero no tiene una caja abierta."
       );
     }
   }
