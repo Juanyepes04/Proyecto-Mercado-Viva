@@ -181,7 +181,7 @@ backend/
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/Juanyepes04/Proyecto-Mercado-Viva
 cd Proyecto-Mercado-Viva
 ```
 
@@ -381,3 +381,7 @@ Equipo:
 * Samuel David Gutierrez Mejia
 * Luis Alejandro Correa Arrieta
 * Santiago Ossa Orozco
+
+## Link De La Web desplegada
+
+* https://proyecto-mercado-viva-4.onrender.com
